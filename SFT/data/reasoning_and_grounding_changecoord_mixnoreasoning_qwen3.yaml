@@ -1,0 +1,53 @@
+# DATA_ROOT: 用户需指定数据根目录，例如 export DATA_ROOT=/path/to/your/datasets
+datasets:
+  # website
+  - json_path: ${DATA_ROOT}/annotations/mind2web-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "mind2web/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/guiact-web-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "guiact-web-multi-v2/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/guiact-web-chinese-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "guiact-web-multi-v2-chinese/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/mind2web-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "mind2web/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/guiact-web-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "guiact-web-multi-v2/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/guiact-web-chinese-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "guiact-web-multi-v2-chinese/images/"
+    sampling_strategy: "all"
+
+# mobile
+  - json_path: ${DATA_ROOT}/annotations/coat-terminal-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "android_in_the_zoo/train/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/amex-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "amex/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/aitw-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "aitw-v1/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/android_control-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "android_control/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/gui-odyssey-reasoning_and_grounding_changecoord_1000.json
+    images_folder: "gui-odyssey/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/coat-terminal-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "android_in_the_zoo/train/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/amex-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "amex/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/aitw-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "aitw-v1/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/android_control-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "android_control/images/"
+    sampling_strategy: "all"
+  - json_path: ${DATA_ROOT}/annotations/gui-odyssey-reasoning_and_grounding_changecoord_1000_noreason.json
+    images_folder: "gui-odyssey/images/"
+    sampling_strategy: "all"
