@@ -37,7 +37,7 @@ Supported models and their corresponding agent configs:
 | ScaleCUA | `OpenGVLab/ScaleCUA-7B` | `scalecua` | `scalecua_native_agent` |
 | Qwen2.5-VL | `Qwen/Qwen2.5-VL-7B-Instruct` | `qwen25vl` | `qwen25vl_native_agent` |
 | Qwen3-VL | `Qwen/Qwen3-VL-8B-Instruct` | `qwen3vl` | `qwen3vl_native_agent` |
-| GUI-Libra | `GUILibra/GUILibra-8B-VL` | `guilibra` | `guipivot_native_agent_qwen3vl` |
+| GUI-Libra | `GUILibra/GUILibra-8B-VL` | `guilibra` | `guilibra_native_agent_qwen3vl` |
 
 **1. Configure the environment:**
 Edit the following two files:
