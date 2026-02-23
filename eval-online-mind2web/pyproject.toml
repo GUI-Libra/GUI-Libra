@@ -1,0 +1,24 @@
+[project]
+name = "guipivot-online-mind2web-eval"
+version = "0.1.0"
+description = "GUIPivot agent for Online Mind2Web evaluation"
+requires-python = ">=3.10"
+
+dependencies = [
+    "simpleArgParser",
+    "loguru",
+    "tqdm",
+    "openai>=1.86.0",
+    "Pillow",
+    "numpy",
+    "playwright==1.32.1",
+    "json-repair",
+    "httpx",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["syn", "syn.*"]
