@@ -25,4 +25,4 @@ export REDDIT="http://${PUBLIC_HOSTNAME}:${REDDIT_PORT}"
 export GITLAB="http://${PUBLIC_HOSTNAME}:${GITLAB_PORT}"
 export MAP="http://${PUBLIC_HOSTNAME}:${MAP_PORT}"
 
-export ARCHIVES_LOCATION="./launcher/images" # relative to GUI-Libra/evaluation/WebArenaLiteV2; use an absolute path if sourced from a different directory
+export ARCHIVES_LOCATION="/home/qianhuiwu/GUI-Libra/evaluation/WebArenaLiteV2/launcher/images"

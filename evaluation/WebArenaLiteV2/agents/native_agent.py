@@ -1,3 +1,7 @@
+# This file is adapted from the ScaleCUA native agent
+# (https://github.com/OpenGVLab/ScaleCUA/blob/main/evaluation/WebArenaLiteV2/agents/native_agent/scalecua_native_agent.py)
+# with enhanced action parsing.
+
 import json
 import logging
 import re
@@ -6,7 +10,7 @@ from agents.ui_agent import UIAgent
 from utils.misc import call_llm_safe, smart_resize, IMAGE_FACTOR
 import ast
 
-logger = logging.getLogger("desktopenv.agent")
+logger = logging.getLogger()
 
 
 class OpenCUANativeAgent(UIAgent):
@@ -30,17 +34,14 @@ class OpenCUANativeAgent(UIAgent):
 
         self.width = width
         self.height = height
+        self.model_backbone = self.engine_params.get("model_backbone", "qwen2.5vl")
 
         with open(self.engine_params["prompt_template"], "r", encoding="utf-8") as f:
             self.prompt_template = json.load(f)
 
         self.user_instruction_template = self.prompt_template["user_prompt_planning"]
-        if self.engine_params["enable_thinking"]:
-            self.sys_prompt = self.prompt_template["sys_prompt_planning_cot"]
-        else:
-            self.sys_prompt = self.prompt_template["sys_prompt_planning_withoutcot"]
+        self.sys_prompt = self.prompt_template["sys_prompt_planning_cot"]
 
-        self.grounding_coord = self.engine_params.get("grounding_coord", 1)
         self.smart_resize = self.engine_params.get("smart_resize", False)
         self.max_pixels = self.engine_params.get("max_pixel", 2007040)
         self.min_pixels = self.engine_params.get("min_pixel", 3136)
@@ -90,8 +91,8 @@ class OpenCUANativeAgent(UIAgent):
         operation_match = re.search(operation_pattern, plan, re.DOTALL)
         operation = operation_match.group(1).strip() if operation_match else ""
 
-        # Extract action section
-        action_pattern = r"<operation>.*?</operation>.*?<action>(.*?)</action>"
+        # Extract action section (remove the constraints on parsing operation)
+        action_pattern = r"<action>(.*?)</action>"
         action_match = re.search(action_pattern, plan, re.DOTALL)
         action = action_match.group(1).strip() if action_match else ""
 
@@ -107,24 +108,47 @@ class OpenCUANativeAgent(UIAgent):
         Returns:
             List of parsed action dictionaries
         """
-        lines = action.strip().split("\n")
-        cleaned_lines = []
-        exec_action = []
-        for line in lines:
-            # Skip empty lines, comments, function definitions, etc.
-            if (
-                not line.strip()
-                or line.strip().startswith("#")
-                or line.strip().startswith("def ")
-                or line.strip().startswith('"""')
-                or line.strip().startswith("'''")
-                or line.strip() == "pass"
-            ):
-                continue
-            cleaned_lines.append(line.strip())
+        # Add parsing logic that handles multiline actions by respecting quotes
+        actions = []
+        current = []
+        quote_char = None
+        i = 0
+        text = action.strip()
+        n = len(text)
+        
+        while i < n:
+            c = text[i]
+            if quote_char:
+                if c == quote_char:
+                    # check for escape
+                    is_escaped = False
+                    j = len(current) - 1
+                    while j >= 0 and current[j] == '\\':
+                        is_escaped = not is_escaped
+                        j -= 1
+                    
+                    if not is_escaped:
+                        quote_char = None
+            else:
+                if c in ["'", '"']:
+                    quote_char = c
+                elif c == '\n':
+                    if "".join(current).strip():
+                        actions.append("".join(current).strip())
+                        current = []
+                    i += 1
+                    continue
+            
+            current.append(c)
+            i += 1
+            
+        if current and "".join(current).strip():
+            actions.append("".join(current).strip())
 
-        for line in cleaned_lines:
+        exec_action = []
+        for line in actions:
             exec_action.append(self.parse_exec_action(line))
+        
         if len(exec_action) > 0:
             return exec_action
         else:
@@ -144,13 +168,14 @@ class OpenCUANativeAgent(UIAgent):
         args = []
         kwargs = {}
 
+        action = action.strip()
         # Auto-complete missing closing parenthesis
-        if action[-1] != ")":
+        if action and action[-1] != ")":
             action += ")"
 
         # Parse using AST
         try:
-            tree = ast.parse(action.strip(), mode="eval")
+            tree = ast.parse(action, mode="eval")
 
             # Ensure it's a function call
             if not isinstance(tree.body, ast.Call):
@@ -178,7 +203,8 @@ class OpenCUANativeAgent(UIAgent):
 
         except (SyntaxError, ValueError):
             # Fallback to regex parsing if AST fails
-            func_match = re.match(r"(\w+)\((.*)\)$", action.strip())
+            # Use DOTALL to match newlines in arguments
+            func_match = re.match(r"(\w+)\((.*)\)$", action, re.DOTALL)
             if not func_match:
                 raise ValueError(f"Invalid function call format: {action}")
 
@@ -187,30 +213,50 @@ class OpenCUANativeAgent(UIAgent):
 
             # Special handling for write function
             if method_name == "write":
-                write_match = re.match(r"message=[\'\"](.+)[\'\"]", params_str)
+                write_match = re.match(r"message=[\'\"](.+)[\'\"]", params_str, re.DOTALL)
                 if write_match:
                     message = write_match.group(1)
                     kwargs = {"message": message}
 
-            # Special handling for response function
-            elif method_name == "response":
-                response_match = re.match(r"answer=[\'\"](.+)[\'\"]", params_str)
+            # Special handling for response function. Add support for "answer" action.
+            elif method_name in ["response", "answer"]:
+                response_match = re.search(r"answer=[\'\"](.+)[\'\"]", params_str, re.DOTALL)
                 if response_match:
                     answer = response_match.group(1)
                     kwargs = {"answer": answer}
+                else:
+                    # Add support for generic positional matching if keyword fails
+                    arg_match = re.search(r"[\'\"](.+)[\'\"]", params_str, re.DOTALL)
+                    if arg_match:
+                        kwargs = {"answer": arg_match.group(1)}
             else:
                 # For unsupported functions, raise an exception
                 raise ValueError(f"Unable to parse function call: {action}")
 
+        # Map positional args to kwargs based on method type to better support models without strong format instruction following
+        # Can better support evaluation of Qwen2.5/3 base models.
+        if method_name in ["click", "doubleClick", "rightClick", "moveTo", "dragTo"]:
+            if len(args) == 2 and "x" not in kwargs and "y" not in kwargs:
+                kwargs["x"] = args[0]
+                kwargs["y"] = args[1]
+        elif method_name == "write" and len(args) == 1 and "message" not in kwargs:
+            kwargs["message"] = args[0]
+        elif method_name == "press" and len(args) == 1 and "keys" not in kwargs:
+            kwargs["keys"] = args[0].lower()
+        
         # Apply smart resize if enabled
         if self.smart_resize:
-            smart_resize_height, smart_resize_width = smart_resize(
-                self.height,
-                self.width,
-                factor=IMAGE_FACTOR,
-                min_pixels=self.min_pixels,
-                max_pixels=self.max_pixels,
-            )
+            if self.model_backbone == "qwen3vl":
+                smart_resize_height, smart_resize_width = 1000, 1000
+            else:
+                smart_resize_height, smart_resize_width = smart_resize(
+                    self.height,
+                    self.width,
+                    factor=IMAGE_FACTOR,
+                    min_pixels=self.min_pixels,
+                    max_pixels=self.max_pixels,
+                )
+            
             # Adjust coordinates to 0-1 scale
             kwargs["x"] = (
                 kwargs.get("x") / smart_resize_width
@@ -382,10 +428,13 @@ class OpenCUANativeAgent(UIAgent):
         elif method_name == "wait":
             return {"name": "wait", "parameters": {"seconds": kwargs.get("seconds", 3)}}
 
-        elif method_name == "response":
+        elif method_name in ["response", "answer"]:
+            answer = kwargs.get("answer")
+            if answer is None and len(args) > 0:
+                answer = args[0]
             return {
                 "name": "response",
-                "parameters": {"answer": kwargs.get("answer", "")},
+                "parameters": {"answer": answer or ""},
             }
         elif method_name == "terminate":
             return {
@@ -395,6 +444,10 @@ class OpenCUANativeAgent(UIAgent):
                     "info": kwargs.get("info", ""),
                 },
             }
+
+        # Add support for "back" action to navigate to previous page or state
+        elif method_name == "back":
+            return {"name": "back", "parameters": {}}
 
         else:
             return {"name": "wait", "parameters": {"seconds": 1}}
@@ -424,15 +477,16 @@ class OpenCUANativeAgent(UIAgent):
 
         # Encode screenshot
         image_content = obs["screenshot"]
-        base64_image = self.native_agent.encode_image(image_content)
+        base64_image, img_size = self.native_agent.encode_image(image_content)
         self.messages[1]["content"][0]["image_url"][
             "url"
         ] = f"data:image/png;base64,{base64_image}"
 
         # Send message to language model
         self.native_agent.replace_messages(self.messages)
+        logger.info("Input Messages: %s", self.messages)
         plan = call_llm_safe(self.native_agent)
-        print(plan)
+        logger.info("API Response Plan: %s", plan)
 
         # Parse response according to expected format:
         # <think>[reasoning]</think>

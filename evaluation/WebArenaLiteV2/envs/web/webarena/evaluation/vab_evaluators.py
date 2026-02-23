@@ -12,13 +12,19 @@ from PIL import Image
 from playwright.sync_api import CDPSession, Page
 
 import base64
+import logging
 from io import BytesIO
+
+logger = logging.getLogger()
 
 from envs.web.webarena.evaluation.vab_helper_functions import (
     PseudoPage,
     llm_fuzzy_match,
     llm_ua_match,
     generate_from_openai_chat_completion,
+    reddit_get_post_url,
+    shopping_get_latest_order_url,
+    gitlab_get_project_memeber_role,
 )
 
 
@@ -79,7 +85,9 @@ class NumericEvaluator(Evaluator):
             return int(s)
         except ValueError:
             # Return None if the string cannot be converted to int
-            print(f"[NumericEvaluator error]: Cannot convert {s} to int")
+            msg = f"[NumericEvaluator error]: Cannot convert {s} to int"
+            print(msg)
+            logger.error(msg)
             return None
 
     @staticmethod
@@ -137,16 +145,18 @@ class StringEvaluator(Evaluator):
     def exact_match(ref: str, pred: Union[str, int]) -> float:
         if isinstance(pred, int):
             pred = str(pred)
-        return float(
-            StringEvaluator.clean_answer(pred) == StringEvaluator.clean_answer(ref)
-        )
+        res = StringEvaluator.clean_answer(pred) == StringEvaluator.clean_answer(ref)
+        logger.info(f"Exact Match check: ref='{ref}', pred='{pred}' -> {res}")
+        return float(res)
 
     @staticmethod
     @beartype
     def must_include(ref: str, pred: str) -> float:
         clean_ref = StringEvaluator.clean_answer(ref)
         clean_pred = StringEvaluator.clean_answer(pred)
-        return float(clean_ref in clean_pred)
+        res = clean_ref in clean_pred
+        logger.info(f"Must Include check: ref='{ref}', pred='{pred}' -> {res}")
+        return float(res)
 
     @staticmethod
     @beartype
@@ -154,12 +164,16 @@ class StringEvaluator(Evaluator):
         """Returns 1 if pred is not in ref, and 0 otherwise"""
         clean_ref = StringEvaluator.clean_answer(ref)
         clean_pred = StringEvaluator.clean_answer(pred)
-        return float(clean_ref in clean_pred)
+        res = clean_ref in clean_pred
+        logger.info(f"Must Exclude check: ref='{ref}', pred='{pred}' -> {res}")
+        return float(res)
 
     @staticmethod
     @beartype
     def fuzzy_match(ref: str, pred: str, intent: str) -> float:
-        return llm_fuzzy_match(pred, ref, intent)
+        match_score = llm_fuzzy_match(pred, ref, intent)
+        logger.info(f"Fuzzy Match check: ref='{ref}', pred='{pred}', intent='{intent}', score={match_score}")
+        return match_score
 
     @staticmethod
     @beartype
@@ -284,10 +298,10 @@ class URLExactEvaluator(Evaluator):
             return url
 
         pred = clean_url(page.url)
-        print(f"Pred Url: {pred}")
+        logger.info(f"Evaluating URL: pred='{pred}'")
         ref_urls = task_config["eval"]["reference_url"].split(" |OR| ")
         ref_urls = [clean_url(url) for url in ref_urls]
-        print(f"Ref Url: {ref_urls}")
+        logger.info(f"Reference URLs: {ref_urls}")
         matching_rule = task_config["eval"].get("url_note", "EXACT")
         if matching_rule == "EXACT":
             if pred in ref_urls:
@@ -310,7 +324,9 @@ class HTMLContentExactEvaluator(Evaluator):
     @staticmethod
     @beartype
     def fuzzy_match(ref: str, pred: str, intent: str) -> float:
-        return llm_fuzzy_match(pred, ref, intent)
+        match_score = llm_fuzzy_match(pred, ref, intent)
+        logger.info(f"Fuzzy Match check: ref='{ref}', pred='{pred}', intent='{intent}', score={match_score}")
+        return match_score
 
     def __call__(
         self, action_list: List, task_config: Dict, page: Page | PseudoPage
@@ -476,7 +492,7 @@ class PageImageEvaluator(Evaluator):
     def captioning_fn(
         all_image_pixels: List[Image.Image],
         prompts: List[str],
-        model: str = "gpt-4o-2024-11-20",
+        model: str = "gpt-5",
         temperature: float = 0.7,
         max_tokens: int = 2048,
         top_p: float = 1.0,
@@ -601,7 +617,7 @@ class PageImageEvaluator(Evaluator):
                     image = Image.open(requests.get(image_url, stream=True).raw)
                     all_image_pixels.append(image)
                 except Exception as e:
-                    print("[WARNING]: ", e)
+                    logger.warning("[WARNING]: %s", e)
 
             if all_image_pixels == []:
                 return 0.0

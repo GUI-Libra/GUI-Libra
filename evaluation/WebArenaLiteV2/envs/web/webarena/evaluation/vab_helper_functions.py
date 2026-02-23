@@ -6,7 +6,8 @@ import time
 from typing import Any, Union
 from urllib.parse import urlparse
 import os
-from openai import OpenAI
+from openai import OpenAI, AzureOpenAI
+from azure.identity import ChainedTokenCredential, AzureCliCredential, DefaultAzureCredential, get_bearer_token_provider
 import requests
 from beartype import beartype
 from beartype.typing import Dict, List
@@ -18,6 +19,32 @@ import logging
 
 logger = logging.getLogger("logger")
 
+
+def get_client(resource_name=os.environ.get("AZURE_RESOURCE_NAME"), api_version="2025-04-01-preview"):
+    azure_credential = ChainedTokenCredential(
+        AzureCliCredential(),
+        DefaultAzureCredential(
+            exclude_cli_credential=True,
+            exclude_environment_credential=True,
+            exclude_shared_token_cache_credential=True,
+            exclude_developer_cli_credential=True,
+            exclude_powershell_credential=True,
+            exclude_interactive_browser_credential=True,
+            exclude_visual_studio_code_credentials=True,
+            managed_identity_client_id=os.environ.get("DEFAULT_IDENTITY_CLIENT_ID"),
+        ),
+    )
+    # azure_credential = DefaultAzureCredential()
+
+    client = AzureOpenAI(
+        api_version=api_version,
+        azure_endpoint=f"https://{resource_name}.openai.azure.com/",
+        azure_ad_token_provider=get_bearer_token_provider(
+            azure_credential, "https://cognitiveservices.azure.com/.default"
+        ),
+    )
+
+    return client
 
 def generate_from_openai_chat_completion(
     messages: list[dict[str, str]],
@@ -32,21 +59,22 @@ def generate_from_openai_chat_completion(
     max_attempt = 5
     cur_attempt = 0
 
-    if "OPENAI_API_KEY" not in os.environ:
-        raise ValueError(
-            "OPENAI_API_KEY environment variable must be set when using OpenAI API."
-        )
-
-    client = OpenAI(
-        api_key=os.environ["OPENAI_API_KEY"], base_url=os.environ["OPENAI_BASE_URL"]
-    )
+    api_key = os.environ.get("OPENAI_API_KEY")
+    base_url = os.environ.get("OPENAI_BASE_URL")
+    # Only use standard OpenAI client if we have actual values (not placeholders/empty)
+    if api_key and api_key != "xxx" and base_url and base_url != "xxx":
+        client = OpenAI(api_key=api_key, base_url=base_url)
+    else:
+        # Falls back to your working Azure AOAI configuration
+        client = get_client()
+    
     while cur_attempt < max_attempt:
         try:
             response = client.chat.completions.create(
                 model=model,
                 messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
+                # temperature=0.1,
+                max_completion_tokens=max_tokens,
                 top_p=top_p,
                 stop=[stop_token] if stop_token else None,
             )
@@ -628,7 +656,7 @@ def llm_fuzzy_match(pred: str, reference: str, question: str) -> float:
     logger.info(f"[P] {pred}")
 
     response = generate_from_openai_chat_completion(
-        model="gpt-4o-2024-11-20",
+        model="gpt-5",
         messages=messages,
         temperature=0,
         max_tokens=768,
@@ -671,7 +699,7 @@ def llm_ua_match(pred: str, reference: str, question: str) -> float:
     ]
 
     response = generate_from_openai_chat_completion(
-        model="gpt-4o-2024-11-20",
+        model="gpt-5",
         messages=messages,
         temperature=0,
         max_tokens=768,

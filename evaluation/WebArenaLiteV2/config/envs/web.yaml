@@ -1,10 +1,9 @@
-platform: web
 # Pure Web don't need server_path, Ubuntu Web need server_path
 server_path: http://127.0.0.1:9000
 # Actual Screenshot Width
 width: 1280
 # Actual Screenshot Height
-height: 720
+height: 1000
 # Device Pixel Rate
 dpr: 1
 # Page Load Timeout
@@ -20,3 +19,8 @@ explicitly_allowed_ports:
   - 6669
   - 6670
   - 6671
+  - 7770
+  - 7780
+  - 9999
+  - 8023
+  - 3000

@@ -3,7 +3,7 @@
 # stop if any error occur
 set -e
 
-source 00_vars.sh
+source launcher/00_vars.sh
 
 assert() {
   if ! "$@"; then

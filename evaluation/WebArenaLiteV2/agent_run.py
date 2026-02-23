@@ -7,9 +7,8 @@ import sys
 from collections import defaultdict
 from dotenv import load_dotenv
 
-from agents.agentic_workflow.scalecua_agentic_workflow import OpenCUAAgenticWorkflow
-from agents.native_agent.scalecua_native_agent import OpenCUANativeAgent
-from envs.web.ubuntu_web_env import VMUbuntuWebEnv
+from agents.native_agent import OpenCUANativeAgent
+from agents.guilibra_native_agent import GUILibraNativeAgent
 from envs.web.web_env import WebEnv
 from datetime import datetime
 import yaml, json
@@ -19,6 +18,34 @@ logger.setLevel(logging.DEBUG)
 import traceback
 from utils.misc import *
 
+
+class ConsoleFilter(logging.Filter):
+    """
+    Filter that suppresses large or repetitive log messages from the console.
+    """
+
+    def filter(self, record):
+        msg = record.getMessage()
+        # Suppress API Response Plan (usually very long)
+        if "API Response Plan" in msg:
+            return False
+        # Suppress environment status messages
+        if "is done" in msg:
+            return False
+        if "HTTP Request:" in msg:
+            return False        
+        if "Input Messages:" in msg:
+            return False
+        return True
+
+class LogFileFilter(logging.Filter):
+    def filter(self, record):
+        msg = record.getMessage()
+        if "HTTP Request:" in msg:
+            return False
+        if "Input Messages:" in msg:
+            return False
+        return True
 
 def create_log(path, datetime_str):
     """
@@ -30,10 +57,12 @@ def create_log(path, datetime_str):
     """
     # Clear all existing handlers
     logger.handlers.clear()
+    logger.setLevel(logging.DEBUG)
 
     # Add StreamHandler for console output
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setLevel(logging.INFO)
+    stdout_handler.addFilter(ConsoleFilter())  # Apply the filter
     formatter = logging.Formatter(
         fmt="\x1b[1;33m[%(asctime)s \x1b[31m%(levelname)s \x1b[32m%(module)s/%(lineno)d-%(processName)s\x1b[1;33m] \x1b[0m%(message)s"
     )
@@ -41,29 +70,14 @@ def create_log(path, datetime_str):
     logger.addHandler(stdout_handler)
 
     # File handlers are commented out but kept for reference
-    # file_handler = logging.FileHandler(
-    #     os.path.join(path, "normal-{:}.log".format(datetime_str)), encoding="utf-8"
-    # )
-    # # debug_handler = logging.FileHandler(
-    # #     os.path.join(path, "debug-{:}.log".format(datetime_str)), encoding="utf-8"
-    # # )
-    # sdebug_handler = logging.FileHandler(
-    #     os.path.join(path, "sdebug-{:}.log".format(datetime_str)), encoding="utf-8"
-    # )
-    #
-    # file_handler.setLevel(logging.INFO)
-    # # debug_handler.setLevel(logging.DEBUG)
-    # sdebug_handler.setLevel(logging.DEBUG)
-    #
-    # file_handler.setFormatter(formatter)
-    # # debug_handler.setFormatter(formatter)
-    # sdebug_handler.setFormatter(formatter)
-    #
-    # sdebug_handler.addFilter(logging.Filter("desktopenv"))
-    #
-    # logger.addHandler(file_handler)
-    # # logger.addHandler(debug_handler)
-    # logger.addHandler(sdebug_handler)
+    file_handler = logging.FileHandler(
+        os.path.join(path, "normal-{:}.log".format(datetime_str)), encoding="utf-8"
+    )
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
+    file_handler.addFilter(LogFileFilter())
+    
+    logger.addHandler(file_handler)
 
 
 def run_agent(agent, instruction: str, env, root_folder, max_steps=15, **task_kwargs):
@@ -136,7 +150,7 @@ def run_agent(agent, instruction: str, env, root_folder, max_steps=15, **task_kw
         # Execute the current step
         env.step(code)
 
-        if code[0]["name"] == "terminate":
+        if code[0]["name"] in ["terminate", "response"]:
             break
 
     for key, value_list in collected_data.items():
@@ -171,12 +185,7 @@ def init_env_and_agent(args):
     with open(args.env_config_path, "r") as f:
         env_config = yaml.safe_load(f)
 
-    if args.platform == "web":
-        env = WebEnv(**env_config)
-    elif args.platform == "ubuntu_web":
-        env = VMUbuntuWebEnv(**env_config)
-    else:
-        print(f"Not support for {args.platform}")
+    env = WebEnv(**env_config)
 
     # Load agent configuration
     with open(args.agent_config_path, "r") as f:
@@ -185,21 +194,18 @@ def init_env_and_agent(args):
     screen_width, screen_height = env.screen_size
 
     # Initialize agent
-    if "ui_grounding_model" not in agent_config:
-        engine_params_for_planner = agent_config["planner_model"]
-        agent = OpenCUANativeAgent(
-            engine_params_for_planner,  # Planner Model
-            platform=args.platform,
+    engine_params_for_planner = agent_config["model_config"]
+    if agent_config["model_config"]["model"] == "guilibra":
+        agent = GUILibraNativeAgent(
+            engine_params_for_planner,
             width=screen_width,
             height=screen_height,
         )
     else:
-        engine_params_for_planner = agent_config["planner_model"]
-        engine_params_for_ui_grounding = agent_config["ui_grounding_model"]
-        agent = OpenCUAAgenticWorkflow(
+        agent = OpenCUANativeAgent(
             engine_params_for_planner,
-            engine_params_for_ui_grounding,
-            args.platform,
+            width=screen_width,
+            height=screen_height,
         )
 
     return env, agent
@@ -228,7 +234,7 @@ def worker(args, worker_id):
         for i, task_file in enumerate(task_files)
         if i % args.num_workers == worker_id
     ]
-    print(f"{multiprocessing.current_process().pid} is processing {task_files}")
+    logger.info(f"{multiprocessing.current_process().pid} is processing {task_files}")
 
     results = []
     for i, task_file in enumerate(task_files):
@@ -237,7 +243,7 @@ def worker(args, worker_id):
             task_config = json.load(f)
             query = task_config.pop("query")
             agent.reset()
-            print(f"Execute Task: {task_config}. Query: {query}")
+            logger.info(f"Execute Task: {task_config}. Query: {query}")
 
             # Skip task if starting page fails to load
             try:
@@ -251,11 +257,11 @@ def worker(args, worker_id):
                     **task_config,
                 )
             except Exception as e:
-                print(f"Error processing task {task_file}: {traceback.print_exc()}")
+                logger.exception(f"Error processing task {task_file}")
                 metric = 0
 
         if metric is not None:
-            print(f"Task completed with metric: {metric}")
+            logger.info(f"Task completed with metric: {metric}")
             results.append(
                 {
                     "id": i,
@@ -331,12 +337,6 @@ def parse_args():
         default=1,
         help="Test with process worker nums",
     )
-    parser.add_argument(
-        "--platform",
-        type=str,
-        default="web",
-        help="Specify the platform, web/ubuntu_web",
-    )
 
     parser.add_argument(
         "--exp_name",
@@ -367,7 +367,7 @@ def demo(args):
     while True:
         query = input("Please enter your task (enter q to quit): ")
         if query.lower() == "q":
-            print("Program exited")
+            logger.info("Program exited")
             break
 
         url = input("Please enter your starting URL: ")
@@ -393,8 +393,7 @@ def demo(args):
                 **task_config,
             )
         except Exception as e:
-            traceback.print_exc()
-            print(f"Error processing task: {e}")
+            logger.exception("Error processing task")
 
 
 def evaluate_results(args, test_result_list):
@@ -420,7 +419,7 @@ def evaluate_results(args, test_result_list):
             if metric is not None:
                 total_scores += metric
                 total_tasks += 1
-    print(
+    logger.info(
         f"Total tasks: {total_tasks}, Total scores: {total_scores}, average score: {total_scores / total_tasks if total_tasks > 0 else 0}"
     )
 
@@ -430,10 +429,14 @@ def main():
     Main function to run evaluation or demo mode.
     """
     args = parse_args()
-    if args.platform == "ubuntu_web":
-        args.num_workers = 1
 
     if args.mode == "test":
+        # Initialize logging for the main process and workers
+        exp_dir = os.path.join("results", args.exp_name)
+        os.makedirs(exp_dir, exist_ok=True)
+        current_time = datetime.now().strftime("%m%d%H%M%S")
+        create_log(exp_dir, current_time)
+
         test_result_list = multi_processes(args)
         evaluate_results(args, test_result_list)
 

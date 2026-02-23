@@ -30,16 +30,16 @@ mkdir -p ./launcher/images
 cd ./launcher/images
 
 echo "==> Downloading Shopping image..."
-# wget -c http://metis.lti.cs.cmu.edu/webarena-images/shopping_final_0712.tar
+wget -c http://metis.lti.cs.cmu.edu/webarena-images/shopping_final_0712.tar
 
 echo "==> Downloading Shopping Admin image..."
-# wget -c http://metis.lti.cs.cmu.edu/webarena-images/shopping_admin_final_0719.tar
+wget -c http://metis.lti.cs.cmu.edu/webarena-images/shopping_admin_final_0719.tar
 
 echo "==> Downloading Reddit image..."
-# wget -c http://metis.lti.cs.cmu.edu/webarena-images/postmill-populated-exposed-withimg.tar
+wget -c http://metis.lti.cs.cmu.edu/webarena-images/postmill-populated-exposed-withimg.tar
 
 echo "==> Downloading GitLab image..."
-# wget -c http://metis.lti.cs.cmu.edu/webarena-images/gitlab-populated-final-port8023.tar
+wget -c http://metis.lti.cs.cmu.edu/webarena-images/gitlab-populated-final-port8023.tar
 
 cd ..   # back to launcher/
 
@@ -47,9 +47,9 @@ cd ..   # back to launcher/
 # 3. OpenStreetMap archives (downloaded into launcher/)
 # ------------------------------------------------------------
 echo "==> Downloading OpenStreetMap archives..."
-# wget -c https://zenodo.org/records/12636845/files/openstreetmap-website-db.tar.gz
-# wget -c https://zenodo.org/records/12636845/files/openstreetmap-website-web.tar.gz
-# wget -c https://zenodo.org/records/12636845/files/openstreetmap-website.tar.gz
+wget -c https://zenodo.org/records/12636845/files/openstreetmap-website-db.tar.gz
+wget -c https://zenodo.org/records/12636845/files/openstreetmap-website-web.tar.gz
+wget -c https://zenodo.org/records/12636845/files/openstreetmap-website.tar.gz
 
 echo "==> Extracting openstreetmap-website.tar.gz..."
 tar -xzf ./openstreetmap-website.tar.gz
@@ -64,6 +64,8 @@ VARS_FILE="$SCRIPT_DIR/launcher/00_vars.sh"
 
 echo "==> Setting ARCHIVES_LOCATION in launcher/00_vars.sh..."
 sed -i "s|export ARCHIVES_LOCATION=.*|export ARCHIVES_LOCATION=\"$IMAGES_ABS_PATH\"|" "$VARS_FILE"
+
+bash launcher/01_docker_load_images.sh
 
 echo ""
 echo "==> Setup complete."

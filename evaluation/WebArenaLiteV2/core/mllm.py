@@ -1,6 +1,8 @@
 import base64
 import sys
+import io
 
+from PIL import Image
 import numpy as np
 
 from core.engine import (
@@ -49,10 +51,16 @@ class LMMAgent:
     def encode_image(self, image_content):
         # if image_content is a path to an image file, check type of the image_content to verify
         if isinstance(image_content, str):
-            with open(image_content, "rb") as image_file:
-                return base64.b64encode(image_file.read()).decode("utf-8")
+            with Image.open(image_content) as img:
+                return base64.b64encode(img.read()).decode("utf-8"), img.size
         else:
-            return base64.b64encode(image_content).decode("utf-8")
+            # Try to get size if it's bytes
+            try:
+                img = Image.open(io.BytesIO(image_content))
+                size = img.size
+            except:
+                raise ValueError("image_content is not a valid image")
+            return base64.b64encode(image_content).decode("utf-8"), size
 
     def reset(
         self,
@@ -98,7 +106,7 @@ class LMMAgent:
                 "content": [{"type": "text", "text": text_content}],
             }
             if image_content:
-                base64_image = self.encode_image(image_content)
+                base64_image, _ = self.encode_image(image_content)
                 self.messages[index]["content"].append(
                     {
                         "type": "image_url",
@@ -151,7 +159,7 @@ class LMMAgent:
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
                     for image in image_content:
-                        base64_image = self.encode_image(image)
+                        base64_image, _ = self.encode_image(image)
                         message["content"].append(
                             {
                                 "type": "image_url",
@@ -163,7 +171,7 @@ class LMMAgent:
                         )
                 else:
                     # If image_content is a single image, handle it directly
-                    base64_image = self.encode_image(image_content)
+                    base64_image, _ = self.encode_image(image_content)
                     message["content"].append(
                         {
                             "type": "image_url",
@@ -205,7 +213,7 @@ class LMMAgent:
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
                     for image in image_content:
-                        base64_image = self.encode_image(image)
+                        base64_image, _ = self.encode_image(image)
                         message["content"].append(
                             {
                                 "type": "image",
@@ -218,7 +226,7 @@ class LMMAgent:
                         )
                 else:
                     # If image_content is a single image, handle it directly
-                    base64_image = self.encode_image(image_content)
+                    base64_image, _ = self.encode_image(image_content)
                     message["content"].append(
                         {
                             "type": "image",
@@ -252,7 +260,7 @@ class LMMAgent:
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
                     for image in image_content:
-                        base64_image = self.encode_image(image)
+                        base64_image, _ = self.encode_image(image)
                         message["content"].append(
                             {
                                 "type": "image",
@@ -261,7 +269,7 @@ class LMMAgent:
                         )
                 else:
                     # If image_content is a single image, handle it directly
-                    base64_image = self.encode_image(image_content)
+                    base64_image, _ = self.encode_image(image_content)
                     message["content"].append(
                         {"type": "image", "image": f"data:image;base64,{base64_image}"}
                     )

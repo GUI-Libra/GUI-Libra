@@ -11,7 +11,10 @@ from envs.base_env import BaseEnv
 from envs.web.utils.js import find_clickable_elements_js_code
 from envs.web.utils.keyword import KEYBOARD_KEYS, key_mapping
 from envs.web.webarena.evaluation.vab_evaluators import webarena_evaluator_router
+import logging
 from envs.web.webarena.utils.auto_login import get_site_comb_from_filepath
+
+logger = logging.getLogger()
 
 
 class WebEnv(BaseEnv):
@@ -83,17 +86,17 @@ class WebEnv(BaseEnv):
         self.context = None
         self.timeout = kwargs.get("wait_timeout", 5) * 1000
         self._initialize_context(enable_recording=False, start_url="about:blank")
-        print(
+        logger.info(
             f"Initializing WebEnv, browser type: {self.browser_type.name}, proxy settings: {proxy_settings}, viewport size: {self.screen_size}, DPR: {self.dpr}, timeout: {self.timeout}s"
         )
-        print(f"WebEnv initialization successful!")
+        logger.info(f"WebEnv initialization successful!")
 
     def start_recording(self) -> None:
         """
         Mark that video recording should begin (actual recording starts on next reset)
         """
         self.should_record = True
-        print("Recording flag set, recording will start on next reset")
+        logger.info("Recording flag set, recording will start on next reset")
 
     def end_recording(self, path: str) -> None:
         """
@@ -103,7 +106,7 @@ class WebEnv(BaseEnv):
             path: Path where to save the recording
         """
         if not self.should_record:
-            print("No active recording in progress")
+            logger.info("No active recording in progress")
             return None
 
         try:
@@ -144,10 +147,10 @@ class WebEnv(BaseEnv):
 
             # Move the video to final destination
             shutil.move(latest_video_path, path)
-            print(f"Video moved to {path}")
+            logger.info(f"Video moved to {path}")
 
         except Exception as e:
-            print(f"Error ending video recording: {str(e)}")
+            logger.error(f"Error ending video recording: {str(e)}")
 
     def reset(self, **kwargs) -> None:
         """
@@ -159,7 +162,7 @@ class WebEnv(BaseEnv):
                       task_config: Info to set up the task, includes the instruction, storage, start_url and the evaluation function
                       benchmark: The benchmark name, default is 'vab_webarena_lite'
         """
-        if "task_config" in kwargs and kwargs["benchmark"] in ["vab_webarena_lite"]:
+        if "task_config" in kwargs and kwargs["benchmark"] in ["vab_webarena_lite", "webvoyager_golden"]:
             with open(kwargs["task_config"]["file_path"], "r", encoding="utf-8") as f:
                 self.task_config = json.load(f)
 
@@ -177,7 +180,7 @@ class WebEnv(BaseEnv):
                     subprocess.run(
                         [
                             python_path,
-                            "env/web/webarena/utils/auto_login.py",
+                            "envs/web/webarena/utils/auto_login.py",
                             "--auth_folder",
                             temp_dir,
                             "--site_list",
@@ -186,7 +189,7 @@ class WebEnv(BaseEnv):
                         check=True,
                     )
                 except subprocess.CalledProcessError as e:
-                    print(f"Error during auto login: {e}")
+                    logger.error(f"Error during auto login: {e}")
                     print(f"Return code: {e.returncode}")
                     if e.stdout:
                         print(f"Standard output: {e.stdout.decode()}")
@@ -243,7 +246,7 @@ class WebEnv(BaseEnv):
 
         Args:
             **kwargs: Keyword arguments containing:
-                benchmark: The benchmark name, default is 'vab_webarena_lite', can also be 'demo'
+                benchmark: The benchmark name, default is 'vab_webarena_lite', can also be 'demo' or 'webvoyager_golden'
                 actions: The list of actions performed by the agent
 
         Returns:
@@ -251,6 +254,7 @@ class WebEnv(BaseEnv):
         """
         evaluate_dict = {
             "vab_webarena_lite": self.evaluate_webarena,
+            "webvoyager_golden": self.evaluate_webarena,
             "demo": self.evaluate_demo,
         }
         score = evaluate_dict[kwargs["benchmark"]](**kwargs)
@@ -271,7 +275,7 @@ class WebEnv(BaseEnv):
             try:
                 self.context.close()
             except Exception as e:
-                print(f"Error closing old context: {str(e)}")
+                logger.error(f"Error closing old context: {str(e)}")
 
         storage_state = self.task_config.get("storage_state", None)
         # Basic context configuration
@@ -398,12 +402,12 @@ class WebEnv(BaseEnv):
         """
 
         def _handle_new_page(page):
-            print(f"New page detected: {page.url}")
+            logger.info(f"New page detected: {page.url}")
             old_page = self.page
             self.page = page
             self.page.wait_for_load_state("domcontentloaded")
             self.setup_dialog_interceptor()
-            print(f"Switched to new page: {self.page.url}")
+            logger.info(f"Switched to new page: {self.page.url}")
 
         # Add page listener
         self.context.on("page", _handle_new_page)
@@ -414,6 +418,9 @@ class WebEnv(BaseEnv):
         """
         if not self.page:
             return
+
+        # Capture current page to avoid using stale references if self.page changes during navigation
+        target_page = self.page
 
         # Create a new dialog intercept handler
         def intercept_dialog(dialog):
@@ -435,7 +442,11 @@ class WebEnv(BaseEnv):
                 dialog_id = f"mock-dialog-{int(time.time() * 1000)}"
 
                 # Inject mock dialog into DOM
-                self.page.evaluate(
+                # Safety check: ensure page is still valid before injection
+                if target_page.is_closed():
+                    return
+
+                target_page.evaluate(
                     """
                     ({ type, message, defaultValue, dialogId }) => {
                         // Clean up existing mock popups
@@ -583,19 +594,26 @@ class WebEnv(BaseEnv):
                 )
 
                 # Log dialog information
-                print(
+                logger.info(
                     f"Dialog intercepted and handled: {dialog_type} - {dialog_message}"
                 )
 
             except Exception as e:
-                print(f"Error handling dialog: {str(e)}")
-                # If error during handling, try to dismiss dialog
+                # If the error is about execution context being destroyed, it's likely a navigation 
+                # occurred right after dialog.accept(). This is expected and can be ignored.
+                if "Execution context was destroyed" in str(e):
+                    logger.debug(f"Error handling dialog: Context destroyed during dialog handling (likely navigation): {str(e)}")
+                else:
+                    logger.error(f"Error handling dialog: {str(e)}")
+                
+                # If error during handling, try to dismiss dialog (if it wasn't already)
                 try:
                     dialog.dismiss()
                 except:
                     pass
 
-        self.page.on("dialog", intercept_dialog)
+        target_page.on("dialog", intercept_dialog)
+
 
     def parse_action(self, prediction):
         pass
@@ -821,13 +839,15 @@ class WebEnv(BaseEnv):
                 "swipe": self._execute_swipe,
                 "keyup": self._execute_keyup,
                 "keydown": self._execute_keydown,
+                "back": self._execute_back,
             }
 
             # Get corresponding handler and execute
             handler = action_handlers.get(action_type)
             if handler:
                 success = handler(parameters)
-                print(f"{action_type} is done")
+                msg = f"{action_type} is done"
+                logger.info(msg)
                 return success
             else:
                 return False
@@ -884,6 +904,10 @@ class WebEnv(BaseEnv):
             bool: Whether the action was executed successfully
         """
         message = parameters.get("message", "")
+        # Clear existing content first
+        self.page.keyboard.press("Control+A")
+        self.page.keyboard.press("Backspace")
+        
         self.page.keyboard.type(message)
         self.page.wait_for_timeout(1000)
         return True
@@ -1133,5 +1157,19 @@ class WebEnv(BaseEnv):
             else:  # direction in ["left", "right"]
                 js_scroll = f"window.scrollBy({delta_x}, 0);"
             self.page.evaluate(js_scroll)
+        self.page.wait_for_timeout(2000)
+        return True
+
+    def _execute_back(self, parameters: Dict[str, Any]) -> bool:
+        """
+        Execute back operation.
+
+        Args:
+            parameters: Dictionary containing parameters (unused)
+
+        Returns:
+            bool: Whether the action was executed successfully
+        """
+        self.page.go_back()
         self.page.wait_for_timeout(2000)
         return True

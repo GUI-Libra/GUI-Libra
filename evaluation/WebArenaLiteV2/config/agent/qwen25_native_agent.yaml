@@ -4,10 +4,11 @@ model_config:
   # API base URL
   base_url: http://localhost:10028/v1/
   # API model name:
-  model: scalecua
+  model: qwen25vl
+  # Model Backbone: qwen2.5vl | qwen3vl
   model_backbone: qwen2.5vl
   # Prompt template, including settings for when used as a native agent and as a planner-worker agent
-  prompt_template: config/prompt_template/scalecua.json
+  prompt_template: config/prompt_template/qwen25vl.json
   # Always keep `smart_resize` as True. For qwen3vl, we normalize the coordinates with 1000. For qwen2.5vl, we use smart_resize function.
   smart_resize: true
   max_pixels: 2109744

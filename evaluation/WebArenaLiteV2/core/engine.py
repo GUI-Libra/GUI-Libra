@@ -231,7 +231,7 @@ class LMMEnginevLLM(LMMEngine):
         self,
         messages,
         temperature=0.0,
-        top_p=0.8,
+        top_p=1.0,
         repetition_penalty=1.05,
         max_new_tokens=512,
         **kwargs

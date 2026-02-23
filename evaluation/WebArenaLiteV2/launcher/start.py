@@ -21,7 +21,6 @@ URL_CONFIG_PATH = "config/envs/webarena/init/webarena_url.json"
 
 # Define list of scripts to execute (in order) - relative to inner path
 SCRIPTS = [
-    "01_docker_load_images.sh",
     "02_docker_remove_containers.sh",
     "03_docker_create_containers.sh",
     "04_docker_start_containers.sh",
