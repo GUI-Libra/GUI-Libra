@@ -4,7 +4,7 @@
   ],
   "task_id": 82,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "Show me the order statuses for order number 170 and 189.",
   "eval": {
     "eval_types": [

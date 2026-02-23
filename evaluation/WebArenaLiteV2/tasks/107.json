@@ -4,7 +4,7 @@
     "query": "Set up a new, empty repository with the name awesome_llm_reading?",
     "task_config": {
         "example_id": "107.json",
-        "file_path": "config/env/webarena/tasks/107.json"
+        "file_path": "config/envs/webarena/tasks/107.json"
     },
     "benchmark": "vab_webarena_lite"
 }

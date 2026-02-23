@@ -4,7 +4,7 @@
     "query": "Set my gitlab status as Enjoying life.",
     "task_config": {
         "example_id": "98.json",
-        "file_path": "config/env/webarena/tasks/98.json"
+        "file_path": "config/envs/webarena/tasks/98.json"
     },
     "benchmark": "vab_webarena_lite"
 }

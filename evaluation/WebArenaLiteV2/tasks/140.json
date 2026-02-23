@@ -4,7 +4,7 @@
     "query": "Draft and submit an email to the shop owner via their contact us function for a coupon as my refund is suppoed to be replaced by a coupon",
     "task_config": {
         "example_id": "140.json",
-        "file_path": "config/env/webarena/tasks/140.json"
+        "file_path": "config/envs/webarena/tasks/140.json"
     },
     "benchmark": "vab_webarena_lite"
 }

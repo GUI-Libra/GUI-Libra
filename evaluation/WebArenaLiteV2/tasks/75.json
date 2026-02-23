@@ -4,7 +4,7 @@
     "query": "Show me the \"chairs\" listings by ascending price.",
     "task_config": {
         "example_id": "75.json",
-        "file_path": "config/env/webarena/tasks/75.json"
+        "file_path": "config/envs/webarena/tasks/75.json"
     },
     "benchmark": "vab_webarena_lite"
 }

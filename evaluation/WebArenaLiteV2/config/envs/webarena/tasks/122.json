@@ -4,7 +4,7 @@
   ],
   "task_id": 122,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Add a new color blue to size S and M of Frankie Sweatshirt",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/catalog/product/edit/id/110/",
+        "url": "http://localhost:7780/admin/catalog/product/edit/id/110/",
         "locator": "document.querySelector('[data-index=\"configurable\"').outerText",
         "required_contents": {
           "must_include": [

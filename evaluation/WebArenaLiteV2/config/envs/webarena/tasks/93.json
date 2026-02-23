@@ -4,7 +4,7 @@
   ],
   "task_id": 93,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "Who gave 4 or 5 stars for phone cases from EYZUTAK",
   "eval": {
     "eval_types": [

@@ -4,7 +4,7 @@
   ],
   "task_id": 42,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Tell me the full names of the repositories where I made contributions and they got the most stars?",
   "eval": {
     "eval_types": [

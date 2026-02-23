@@ -4,7 +4,7 @@
   ],
   "task_id": 87,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "Summarize customer reviews for Amazon Echo Dot 3rd generation.",
   "eval": {
     "eval_types": [

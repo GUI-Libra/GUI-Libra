@@ -4,14 +4,14 @@
   ],
   "task_id": 70,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "Show the most recent pending order",
   "eval": {
     "eval_types": [
       "url_match"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6666/sales/order/view/order_id/189/",
+    "reference_url": "http://localhost:7770/sales/order/view/order_id/189/",
     "program_html": [],
     "url_note": "GOLD in PRED"
   },

@@ -4,7 +4,7 @@
   ],
   "task_id": 97,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Go to the merge request on verification functions assigned to me, find if the author of the merge request responded at the end, and reply \"Thank you\" if he did. Otherwise remind him with a simple @.",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/byteblaze/a11y-webring.club/-/merge_requests/40",
+        "url": "http://localhost:8023/byteblaze/a11y-webring.club/-/merge_requests/40",
         "locator": "document.querySelector('[id=\"notes-list\"').lastElementChild.querySelector('.timeline-discussion-body').outerText",
         "required_contents": {
           "exact_match": "@davepgreene"

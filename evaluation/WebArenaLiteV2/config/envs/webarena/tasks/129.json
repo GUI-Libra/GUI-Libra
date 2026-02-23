@@ -4,7 +4,7 @@
   ],
   "task_id": 129,
   "storage_state": "./.auth/reddit_state.json",
-  "start_url": "http://10.140.52.49:6668",
+  "start_url": "http://localhost:9999",
   "intent": "Find a subreddit focused on topics related to gaming consoles, and post my question, \"what is the recommended console to buy these days\" there",
   "eval": {
     "eval_types": [
@@ -12,7 +12,7 @@
       "program_html"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6668/f/consoles",
+    "reference_url": "http://localhost:9999/f/consoles",
     "program_html": [
       {
         "url": "func:reddit_get_post_url('__last_url__')",

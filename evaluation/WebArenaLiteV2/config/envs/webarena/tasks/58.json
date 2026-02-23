@@ -4,7 +4,7 @@
   ],
   "task_id": 58,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Show me the email address of the customer who is the most unhappy with the style of Zoe products",
   "eval": {
     "eval_types": [

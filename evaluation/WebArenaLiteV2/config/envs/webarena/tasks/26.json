@@ -4,7 +4,7 @@
   ],
   "task_id": 26,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Show me the name of the customers who have expressed dissatisfaction with Chloe Compete Tank",
   "eval": {
     "eval_types": [

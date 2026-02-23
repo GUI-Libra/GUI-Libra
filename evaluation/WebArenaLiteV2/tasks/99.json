@@ -4,7 +4,7 @@
     "query": "Mark all Hollister Backyard Sweatshirt on sale",
     "task_config": {
         "example_id": "99.json",
-        "file_path": "config/env/webarena/tasks/99.json"
+        "file_path": "config/envs/webarena/tasks/99.json"
     },
     "benchmark": "vab_webarena_lite"
 }

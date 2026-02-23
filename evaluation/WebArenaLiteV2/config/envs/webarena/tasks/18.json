@@ -4,7 +4,7 @@
   ],
   "task_id": 18,
   "storage_state": null,
-  "start_url": "http://10.140.52.49:6671",
+  "start_url": "http://localhost:3000",
   "intent": "What is the duration required to first walk from Massachusetts Institute of Technology to Harvard University, and then drive to Boston Logan International Airport?",
   "eval": {
     "eval_types": [

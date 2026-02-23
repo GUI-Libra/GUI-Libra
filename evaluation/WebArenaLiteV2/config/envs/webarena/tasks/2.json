@@ -4,7 +4,7 @@
   ],
   "task_id": 2,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Tell me the the number of reviews that our store received by far that mention term \"best\" in review body",
   "eval": {
     "eval_types": [

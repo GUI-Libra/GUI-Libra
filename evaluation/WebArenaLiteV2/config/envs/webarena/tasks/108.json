@@ -4,7 +4,7 @@
   ],
   "task_id": 108,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Vinta wants to check my dotfile configurations. Please invite him to the repo as a guest.",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/byteblaze/dotfiles/-/project_members",
+        "url": "http://localhost:8023/byteblaze/dotfiles/-/project_members",
         "locator": "func:gitlab_get_project_memeber_role(__page__, 'vinta')",
         "required_contents": {
           "must_include": [

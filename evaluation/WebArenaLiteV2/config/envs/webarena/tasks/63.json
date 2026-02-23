@@ -4,14 +4,14 @@
   ],
   "task_id": 63,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "Show me products under $100 in \"Men Shoes\" category",
   "eval": {
     "eval_types": [
       "url_match"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6666/clothing-shoes-jewelry/men/shoes.html?price=0-100 |OR| http://10.140.52.49:6666/clothing-shoes-jewelry.html?cat=145&price=0-100",
+    "reference_url": "http://localhost:7770/clothing-shoes-jewelry/men/shoes.html?price=0-100 |OR| http://localhost:7770/clothing-shoes-jewelry.html?cat=145&price=0-100",
     "program_html": [],
     "url_note": "GOLD in PRED"
   },

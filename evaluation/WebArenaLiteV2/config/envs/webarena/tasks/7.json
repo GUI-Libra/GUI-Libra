@@ -4,7 +4,7 @@
   ],
   "task_id": 7,
   "storage_state": null,
-  "start_url": "http://10.140.52.49:6671",
+  "start_url": "http://localhost:3000",
   "intent": "Check if the Pittsburgh Bureau of Police can be reached in one hour by car from gates building at CMU",
   "eval": {
     "eval_types": [

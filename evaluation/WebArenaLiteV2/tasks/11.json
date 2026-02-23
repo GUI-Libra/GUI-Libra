@@ -4,7 +4,7 @@
     "query": "How long does it take to walk from Carnegie Museum of Art to Sorrells Library?",
     "task_config": {
         "example_id": "11.json",
-        "file_path": "config/env/webarena/tasks/11.json"
+        "file_path": "config/envs/webarena/tasks/11.json"
     },
     "benchmark": "vab_webarena_lite"
 }

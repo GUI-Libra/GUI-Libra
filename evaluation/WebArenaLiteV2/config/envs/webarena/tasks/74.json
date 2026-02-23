@@ -4,7 +4,7 @@
   ],
   "task_id": 74,
   "storage_state": "./.auth/shopping_state.json",
-  "start_url": "http://10.140.52.49:6666",
+  "start_url": "http://localhost:7770",
   "intent": "How much refund I should expect from my order canceled in 2022, including shipping fee",
   "eval": {
     "eval_types": [

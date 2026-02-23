@@ -4,7 +4,7 @@
     "query": "Summarize customer reviews for Amazon Echo Dot 3rd generation.",
     "task_config": {
         "example_id": "87.json",
-        "file_path": "config/env/webarena/tasks/87.json"
+        "file_path": "config/envs/webarena/tasks/87.json"
     },
     "benchmark": "vab_webarena_lite"
 }

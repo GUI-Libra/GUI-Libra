@@ -4,7 +4,7 @@
     "query": "Get directions from Carnegie Hall in NYC to Carnegie Mellon University using driving options.",
     "task_config": {
         "example_id": "149.json",
-        "file_path": "config/env/webarena/tasks/149.json"
+        "file_path": "config/envs/webarena/tasks/149.json"
     },
     "benchmark": "vab_webarena_lite"
 }

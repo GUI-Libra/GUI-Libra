@@ -4,7 +4,7 @@
   ],
   "task_id": 118,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Star the top eight most stared public repositories in Gitlab",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/users/byteblaze/starred",
+        "url": "http://localhost:8023/users/byteblaze/starred",
         "locator": "",
         "required_contents": {
           "must_include": [

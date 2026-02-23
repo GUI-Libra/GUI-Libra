@@ -4,7 +4,7 @@
   ],
   "task_id": 121,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Modify the address of order #299 to 456 Oak Avenue, New York, NY, 10001",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/sales/order/view/order_id/299",
+        "url": "http://localhost:7780/admin/sales/order/view/order_id/299",
         "locator": "",
         "required_contents": {
           "must_include": [

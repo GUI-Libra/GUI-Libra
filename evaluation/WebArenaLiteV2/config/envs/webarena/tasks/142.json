@@ -4,7 +4,7 @@
   ],
   "task_id": 142,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Create a shipping report from 08/05/2022 to 03/01/2023",
   "eval": {
     "eval_types": [
@@ -12,7 +12,7 @@
       "program_html"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6667/admin/reports/report_sales/shipping",
+    "reference_url": "http://localhost:7780/admin/reports/report_sales/shipping",
     "program_html": [
       {
         "url": "last",

@@ -4,7 +4,7 @@
     "query": "Add a white desk to my wish list.",
     "task_config": {
         "example_id": "115.json",
-        "file_path": "config/env/webarena/tasks/115.json"
+        "file_path": "config/envs/webarena/tasks/115.json"
     },
     "benchmark": "vab_webarena_lite"
 }

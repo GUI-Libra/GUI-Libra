@@ -4,7 +4,7 @@
   ],
   "task_id": 143,
   "storage_state": "./.auth/reddit_state.json",
-  "start_url": "http://10.140.52.49:6668",
+  "start_url": "http://localhost:9999",
   "intent": "Thumbs down the top 1 post ever in gadgets.",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6668/f/gadgets/19459/a-custom-gaming-pc-built-inside-a-vintage-1940s-motorola",
+        "url": "http://localhost:9999/f/gadgets/19459/a-custom-gaming-pc-built-inside-a-vintage-1940s-motorola",
         "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
         "required_contents": {
           "must_include": [

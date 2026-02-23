@@ -4,14 +4,14 @@
   ],
   "task_id": 81,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Checkout open merge requests requiring my review",
   "eval": {
     "eval_types": [
       "url_match"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6669/dashboard/merge_requests?reviewer_username=byteblaze |OR| http://10.140.52.49:6669/dashboard/merge_requests?scope=all&state=opened&reviewer_username=byteblaze",
+    "reference_url": "http://localhost:8023/dashboard/merge_requests?reviewer_username=byteblaze |OR| http://localhost:8023/dashboard/merge_requests?scope=all&state=opened&reviewer_username=byteblaze",
     "program_html": [],
     "url_note": "GOLD in PRED"
   },

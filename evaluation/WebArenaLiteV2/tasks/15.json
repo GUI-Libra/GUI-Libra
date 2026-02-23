@@ -4,7 +4,7 @@
     "query": "What is the zip code of Chatham University?",
     "task_config": {
         "example_id": "15.json",
-        "file_path": "config/env/webarena/tasks/15.json"
+        "file_path": "config/envs/webarena/tasks/15.json"
     },
     "benchmark": "vab_webarena_lite"
 }

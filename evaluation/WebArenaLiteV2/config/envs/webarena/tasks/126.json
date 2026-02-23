@@ -4,7 +4,7 @@
   ],
   "task_id": 126,
   "storage_state": "./.auth/reddit_state.json",
-  "start_url": "http://10.140.52.49:6668",
+  "start_url": "http://localhost:9999",
   "intent": "Create a new forum named Cyberpunk, with a description of \"Welcome to the future\", and include ['Games', 'Books', 'Movies', 'Future'] in the sidebar?",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6668/f/Cyberpunk/edit",
+        "url": "http://localhost:9999/f/Cyberpunk/edit",
         "locator": "document.querySelector(\"#forum_description\").value",
         "required_contents": {
           "must_include": [
@@ -23,7 +23,7 @@
         }
       },
       {
-        "url": "http://10.140.52.49:6668/f/Cyberpunk/edit",
+        "url": "http://localhost:9999/f/Cyberpunk/edit",
         "locator": "document.querySelector(\"#forum_sidebar\").value",
         "required_contents": {
           "must_include": [

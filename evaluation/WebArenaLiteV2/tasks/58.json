@@ -4,7 +4,7 @@
     "query": "Show me the email address of the customer who is the most unhappy with the style of Zoe products",
     "task_config": {
         "example_id": "58.json",
-        "file_path": "config/env/webarena/tasks/58.json"
+        "file_path": "config/envs/webarena/tasks/58.json"
     },
     "benchmark": "vab_webarena_lite"
 }

@@ -4,7 +4,7 @@
     "query": "Cancel order 302",
     "task_config": {
         "example_id": "106.json",
-        "file_path": "config/env/webarena/tasks/106.json"
+        "file_path": "config/envs/webarena/tasks/106.json"
     },
     "benchmark": "vab_webarena_lite"
 }

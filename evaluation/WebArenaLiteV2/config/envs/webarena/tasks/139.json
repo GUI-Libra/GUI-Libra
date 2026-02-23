@@ -4,7 +4,7 @@
   ],
   "task_id": 139,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Lookup orders that are canceled",
   "eval": {
     "eval_types": [
@@ -12,7 +12,7 @@
       "program_html"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6667/admin/sales/order/",
+    "reference_url": "http://localhost:7780/admin/sales/order/",
     "program_html": [
       {
         "url": "last",

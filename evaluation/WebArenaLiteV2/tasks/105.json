@@ -4,7 +4,7 @@
     "query": "Add 2 Hawaiian Bamboo Orchid Roots #zc50 - by Discount Hawaiian Gifts to my wish list",
     "task_config": {
         "example_id": "105.json",
-        "file_path": "config/env/webarena/tasks/105.json"
+        "file_path": "config/envs/webarena/tasks/105.json"
     },
     "benchmark": "vab_webarena_lite"
 }

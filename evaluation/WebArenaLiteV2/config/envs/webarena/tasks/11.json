@@ -4,7 +4,7 @@
   ],
   "task_id": 11,
   "storage_state": null,
-  "start_url": "http://10.140.52.49:6671",
+  "start_url": "http://localhost:3000",
   "intent": "How long does it take to walk from Carnegie Museum of Art to Sorrells Library?",
   "eval": {
     "eval_types": [

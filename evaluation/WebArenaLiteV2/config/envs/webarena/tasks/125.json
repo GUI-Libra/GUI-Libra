@@ -4,7 +4,7 @@
   ],
   "task_id": 125,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Add the following users to my GitHub timeline item management extension repository as maintainer: ['abisubramanya27', 'lahwaacz']",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/byteblaze/remove-board-movement-events-from-the-github-issue-timeline/-/project_members",
+        "url": "http://localhost:8023/byteblaze/remove-board-movement-events-from-the-github-issue-timeline/-/project_members",
         "locator": "func:gitlab_get_project_memeber_role(__page__, 'abisubramanya27')",
         "required_contents": {
           "must_include": [
@@ -23,7 +23,7 @@
         }
       },
       {
-        "url": "http://10.140.52.49:6669/byteblaze/remove-board-movement-events-from-the-github-issue-timeline/-/project_members",
+        "url": "http://localhost:8023/byteblaze/remove-board-movement-events-from-the-github-issue-timeline/-/project_members",
         "locator": "func:gitlab_get_project_memeber_role(__page__, 'lahwaacz')",
         "required_contents": {
           "must_include": [

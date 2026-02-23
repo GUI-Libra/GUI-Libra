@@ -4,7 +4,7 @@
   ],
   "task_id": 153,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Assign the issue regarding 404 in a11yproject to myself.",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/dashboard/issues?scope=all&state=opened&assignee_username=byteblaze",
+        "url": "http://localhost:8023/dashboard/issues?scope=all&state=opened&assignee_username=byteblaze",
         "locator": "",
         "required_contents": {
           "must_include": [

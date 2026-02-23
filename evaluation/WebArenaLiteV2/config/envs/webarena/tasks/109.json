@@ -4,7 +4,7 @@
   ],
   "task_id": 109,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Change the page title of \"Home Page\" page on my site to \"This is the home page!! Leave here!!\".",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/cms/page/edit/page_id/2/",
+        "url": "http://localhost:7780/admin/cms/page/edit/page_id/2/",
         "locator": "document.querySelector('input[name=\"title\"]').value",
         "required_contents": {
           "exact_match": "This is the home page!! Leave here!!"

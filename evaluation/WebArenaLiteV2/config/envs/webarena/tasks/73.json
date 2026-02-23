@@ -4,7 +4,7 @@
   ],
   "task_id": 73,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "List the last names of the top 3 contributors to 2019-nCov repo, ranked by the number of commits?",
   "eval": {
     "eval_types": [

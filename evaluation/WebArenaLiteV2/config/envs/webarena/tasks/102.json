@@ -4,7 +4,7 @@
   ],
   "task_id": 102,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Disable Ryker Tee Crew Neck from the site, they are facing some quality issues.",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/catalog/product/edit/id/478/",
+        "url": "http://localhost:7780/admin/catalog/product/edit/id/478/",
         "locator": "document.querySelector('[name=\"product[status]\"').value",
         "required_contents": {
           "exact_match": "2"

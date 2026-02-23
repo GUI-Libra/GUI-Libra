@@ -4,7 +4,7 @@
   ],
   "task_id": 79,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Who else have access to my repo gimmiethat.space, show me their usernames",
   "eval": {
     "eval_types": [

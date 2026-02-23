@@ -4,7 +4,7 @@
     "query": "Ask for product recommendations for running shoes within a budget of $100 in r/sports",
     "task_config": {
         "example_id": "133.json",
-        "file_path": "config/env/webarena/tasks/133.json"
+        "file_path": "config/envs/webarena/tasks/133.json"
     },
     "benchmark": "vab_webarena_lite"
 }

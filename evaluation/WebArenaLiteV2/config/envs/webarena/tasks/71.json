@@ -4,7 +4,7 @@
   ],
   "task_id": 71,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Tell me who has made the most contributions, in terms of number of commits, to the Pytorch GAN project",
   "eval": {
     "eval_types": [

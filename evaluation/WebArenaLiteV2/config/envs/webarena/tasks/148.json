@@ -4,7 +4,7 @@
   ],
   "task_id": 148,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Start a private project web_agent_android_xl with Android template and add primer, convexegg, abishek as members",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/byteblaze/web_agent_android_xl",
+        "url": "http://localhost:8023/byteblaze/web_agent_android_xl",
         "locator": "document.querySelector('.visibility-icon').getAttribute('title')",
         "required_contents": {
           "must_include": [
@@ -23,7 +23,7 @@
         }
       },
       {
-        "url": "http://10.140.52.49:6669/byteblaze/web_agent_android_xl/-/commits",
+        "url": "http://localhost:8023/byteblaze/web_agent_android_xl/-/commits",
         "locator": "",
         "required_contents": {
           "must_include": [
@@ -32,7 +32,7 @@
         }
       },
       {
-        "url": "http://10.140.52.49:6669/byteblaze/web_agent_android_xl/-/project_members",
+        "url": "http://localhost:8023/byteblaze/web_agent_android_xl/-/project_members",
         "locator": "",
         "required_contents": {
           "must_include": [

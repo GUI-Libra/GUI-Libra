@@ -4,7 +4,7 @@
     "query": "Create a new forum named Cyberpunk, with a description of \"Welcome to the future\", and include ['Games', 'Books', 'Movies', 'Future'] in the sidebar?",
     "task_config": {
         "example_id": "126.json",
-        "file_path": "config/env/webarena/tasks/126.json"
+        "file_path": "config/envs/webarena/tasks/126.json"
     },
     "benchmark": "vab_webarena_lite"
 }

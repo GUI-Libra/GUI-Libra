@@ -4,7 +4,7 @@
   ],
   "task_id": 111,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Update order #307 with the DHL tracking number 24353446464",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/sales/order/commentsHistory/order_id/307/active_tab/order_shipments/",
+        "url": "http://localhost:7780/admin/sales/order/commentsHistory/order_id/307/active_tab/order_shipments/",
         "locator": "",
         "required_contents": {
           "must_include": [

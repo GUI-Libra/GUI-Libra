@@ -4,7 +4,7 @@
     "query": "What do customers say about brush from sephora",
     "task_config": {
         "example_id": "53.json",
-        "file_path": "config/env/webarena/tasks/53.json"
+        "file_path": "config/envs/webarena/tasks/53.json"
     },
     "benchmark": "vab_webarena_lite"
 }

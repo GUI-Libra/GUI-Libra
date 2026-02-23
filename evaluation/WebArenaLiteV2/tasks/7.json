@@ -4,7 +4,7 @@
     "query": "Check if the Pittsburgh Bureau of Police can be reached in one hour by car from gates building at CMU",
     "task_config": {
         "example_id": "7.json",
-        "file_path": "config/env/webarena/tasks/7.json"
+        "file_path": "config/envs/webarena/tasks/7.json"
     },
     "benchmark": "vab_webarena_lite"
 }

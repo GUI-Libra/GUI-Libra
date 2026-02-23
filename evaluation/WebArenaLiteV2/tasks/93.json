@@ -4,7 +4,7 @@
     "query": "Who gave 4 or 5 stars for phone cases from EYZUTAK",
     "task_config": {
         "example_id": "93.json",
-        "file_path": "config/env/webarena/tasks/93.json"
+        "file_path": "config/envs/webarena/tasks/93.json"
     },
     "benchmark": "vab_webarena_lite"
 }

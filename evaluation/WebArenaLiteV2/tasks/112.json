@@ -4,7 +4,7 @@
     "query": "Make all Aeon Capri as out of stock",
     "task_config": {
         "example_id": "112.json",
-        "file_path": "config/env/webarena/tasks/112.json"
+        "file_path": "config/envs/webarena/tasks/112.json"
     },
     "benchmark": "vab_webarena_lite"
 }

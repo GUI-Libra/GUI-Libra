@@ -4,7 +4,7 @@
   ],
   "task_id": 25,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Presents the monthly count of successful orders from Jan to December 2022 in MM:COUNT format",
   "eval": {
     "eval_types": [

@@ -4,7 +4,7 @@
   ],
   "task_id": 46,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Compare the payment difference of the last 4 canceled orders and last 4 completed orders",
   "eval": {
     "eval_types": [

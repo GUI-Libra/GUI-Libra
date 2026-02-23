@@ -4,7 +4,7 @@
   ],
   "task_id": 112,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Make all Aeon Capri as out of stock",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6667/admin/catalog/product/edit/id/1861/",
+        "url": "http://localhost:7780/admin/catalog/product/edit/id/1861/",
         "locator": "document.querySelector('[name=\"product[quantity_and_stock_status][is_in_stock]\"').value",
         "required_contents": {
           "exact_match": "0"

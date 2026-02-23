@@ -4,14 +4,14 @@
   ],
   "task_id": 9,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Check out my todos",
   "eval": {
     "eval_types": [
       "url_match"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6669/dashboard/todos",
+    "reference_url": "http://localhost:8023/dashboard/todos",
     "program_html": [],
     "url_note": "GOLD in PRED"
   },

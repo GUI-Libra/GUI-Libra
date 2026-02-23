@@ -4,7 +4,7 @@
   ],
   "task_id": 68,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "Tell me the name of the customer who has the most cancellations in the history",
   "eval": {
     "eval_types": [

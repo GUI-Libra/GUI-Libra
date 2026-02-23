@@ -4,7 +4,7 @@
   ],
   "task_id": 96,
   "storage_state": "./.auth/reddit_state.json",
-  "start_url": "http://10.140.52.49:6668",
+  "start_url": "http://localhost:9999",
   "intent": "Upvote the newest post in books subreddit",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6668/f/books/124260/adults-reading-to-each-other-out-loud",
+        "url": "http://localhost:9999/f/books/124260/adults-reading-to-each-other-out-loud",
         "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
         "required_contents": {
           "must_include": [

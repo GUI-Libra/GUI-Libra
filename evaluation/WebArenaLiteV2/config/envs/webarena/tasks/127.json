@@ -4,7 +4,7 @@
   ],
   "task_id": 127,
   "storage_state": "./.auth/reddit_state.json",
-  "start_url": "http://10.140.52.49:6668",
+  "start_url": "http://localhost:9999",
   "intent": "Open the thread of a trending post on the forum \"machine learning\" and subscribe.",
   "eval": {
     "eval_types": [
@@ -12,10 +12,10 @@
       "program_html"
     ],
     "reference_answers": null,
-    "reference_url": "http://10.140.52.49:6668/f/MachineLearning",
+    "reference_url": "http://localhost:9999/f/MachineLearning",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6668/",
+        "url": "http://localhost:9999/",
         "locator": "document.querySelector(\"#sidebar > section\").outerText",
         "required_contents": {
           "must_include": [

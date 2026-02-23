@@ -4,7 +4,7 @@
   ],
   "task_id": 89,
   "storage_state": null,
-  "start_url": "http://10.140.52.49:6671",
+  "start_url": "http://localhost:3000",
   "intent": "I am arriving at Carnegie Mellon University. Find the nearby US Citizenship and Immigration Services and tell me the walking distance to the nearest Social Security Administration from US Citizenship and Immigration Services",
   "eval": {
     "eval_types": [

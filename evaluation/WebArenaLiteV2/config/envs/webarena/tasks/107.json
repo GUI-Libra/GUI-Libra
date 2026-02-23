@@ -4,7 +4,7 @@
   ],
   "task_id": 107,
   "storage_state": "./.auth/gitlab_state.json",
-  "start_url": "http://10.140.52.49:6669",
+  "start_url": "http://localhost:8023",
   "intent": "Set up a new, empty repository with the name awesome_llm_reading?",
   "eval": {
     "eval_types": [
@@ -14,7 +14,7 @@
     "reference_url": "",
     "program_html": [
       {
-        "url": "http://10.140.52.49:6669/byteblaze/awesome_llm_reading",
+        "url": "http://localhost:8023/byteblaze/awesome_llm_reading",
         "locator": "",
         "required_contents": {
           "must_include": [

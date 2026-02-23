@@ -4,7 +4,7 @@
   ],
   "task_id": 8,
   "storage_state": "./.auth/shopping_admin_state.json",
-  "start_url": "http://10.140.52.49:6667/admin",
+  "start_url": "http://localhost:7780/admin",
   "intent": "List the top 3 search terms in my store",
   "eval": {
     "eval_types": [
