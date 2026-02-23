@@ -24,6 +24,7 @@ from syn.tools import (
 )
 from syn.gpt import GPTClient
 from syn.mind2web import Mind2WebResultWriter
+from syn.data import set_screenshot_save_path
 
 import json
 import time
@@ -44,6 +45,11 @@ class Agent(Explorer):
         self.tasks_done_unique: dict[str, str] = {}
         self.load()
         os.makedirs(self.config.output, exist_ok=True)
+
+        
+        screenshots_path = f"{self.config.output}/screenshots"
+        os.makedirs(screenshots_path, exist_ok=True)
+        set_screenshot_save_path(screenshots_path)
         self.mind2web_writer = Mind2WebResultWriter(self.config.output)
         self._current_mind2web_task_id: str | None = None
 
