@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from agents.native_agent import OpenCUANativeAgent
 from agents.guilibra_native_agent import GUILibraNativeAgent
+from agents.fara_native_agent import FaraNativeAgent
 from envs.web.web_env import WebEnv
 from datetime import datetime
 import yaml, json
@@ -197,6 +198,12 @@ def init_env_and_agent(args):
     engine_params_for_planner = agent_config["model_config"]
     if agent_config["model_config"]["model"] == "guilibra":
         agent = GUILibraNativeAgent(
+            engine_params_for_planner,
+            width=screen_width,
+            height=screen_height,
+        )
+    elif agent_config["model_config"]["model"] == "fara":
+        agent = FaraNativeAgent(
             engine_params_for_planner,
             width=screen_width,
             height=screen_height,

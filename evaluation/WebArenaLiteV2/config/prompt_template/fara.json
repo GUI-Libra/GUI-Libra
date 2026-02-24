@@ -1,0 +1,4 @@
+{
+    "user_prompt_first": "{instruction}",
+    "user_prompt_subsequent": "Here is the next screenshot. Think about what to do next."
+}

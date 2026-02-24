@@ -1,0 +1,15 @@
+model_config:
+  # Engine type, default uses openai api engine, see core/engine.py for other supported engines
+  engine_type: vllm
+  # API base URL
+  base_url: http://localhost:10028/v1/
+  # API model name (must match --served-model-name when launching vLLM)
+  model: fara
+  # Model backbone: FARA-7B is based on Qwen2.5-VL
+  model_backbone: qwen2.5vl
+  # Prompt template
+  prompt_template: config/prompt_template/fara.json
+  # Smart resize: true for Qwen2.5-VL based models
+  smart_resize: true
+  max_pixels: 2109744
+  min_pixels: 3136
