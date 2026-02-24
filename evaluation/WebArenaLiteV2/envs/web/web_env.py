@@ -395,6 +395,11 @@ class WebEnv(BaseEnv):
         screenshot_bytes = self.page.screenshot()
         return screenshot_bytes
 
+    def get_obs(self, return_screenshot=True, return_a11tree=False):
+        obs = super().get_obs(return_screenshot=return_screenshot, return_a11tree=return_a11tree)
+        obs["url"] = self.page.url
+        return obs
+
     def setup_global_page_listener(self) -> None:
         """
         Set up global page listener to automatically switch to new pages and close old ones.

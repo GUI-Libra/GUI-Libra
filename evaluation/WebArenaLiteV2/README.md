@@ -70,8 +70,7 @@ export OPENAI_API_KEY="<your_api_key>"
 export OPENAI_BASE_URL="<your_api_base_url>"
 
 python agent_run.py \
-    --platform web \
-    --env_config_path config/env/web.yaml \
+    --env_config_path config/envs/web.yaml \
     --agent_config_path config/agent/<agent_config>.yaml \
     --task_config_path tasks/ \
     --num_workers 8 \
