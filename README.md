@@ -194,11 +194,14 @@ Supported action types: `Click`, `Write`, `Terminate`, `Swipe`, `Scroll`, `Navig
 ## Citation
 
 ```bibtex
-@article{yang2026guilibra,
-  title={GUI-Libra: Training Native GUI Agents to Reason and Act with Action-aware Supervision and Partially Verifiable RL},
-  author={Yang, Rui and Wu, Qianhui and Wang, Zhaoyang and Chen, Hanyang and Yang, Ke and Cheng, Hao and Yao, Huaxiu and Peng, Baolin and Zhang, Huan and Gao, Jianfeng and Zhang, Tong},
-  journal={arXiv preprint arXiv:2602.22190},
-  year={2026}
+@misc{yang2026guilibratrainingnativegui,
+      title={GUI-Libra: Training Native GUI Agents to Reason and Act with Action-aware Supervision and Partially Verifiable RL}, 
+      author={Rui Yang and Qianhui Wu and Zhaoyang Wang and Hanyang Chen and Ke Yang and Hao Cheng and Huaxiu Yao and Baoling Peng and Huan Zhang and Jianfeng Gao and Tong Zhang},
+      year={2026},
+      eprint={2602.22190},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2602.22190}, 
 }
 ```
 
