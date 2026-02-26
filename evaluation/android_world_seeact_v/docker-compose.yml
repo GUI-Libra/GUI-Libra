@@ -1,0 +1,497 @@
+version: "3.9"
+
+services:
+  emu1:
+    image: android_world:latest
+    container_name: emu1
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_1
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu2:
+    image: android_world:latest
+    container_name: emu2
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_2
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu3:
+    image: android_world:latest
+    container_name: emu3
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_3
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu4:
+    image: android_world:latest
+    container_name: emu4
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_4
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu5:
+    image: android_world:latest
+    container_name: emu5
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_5
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu6:
+    image: android_world:latest
+    container_name: emu6
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_6
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu7:
+    image: android_world:latest
+    container_name: emu7
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_7
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu8:
+    image: android_world:latest
+    container_name: emu8
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_8
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu9:
+    image: android_world:latest
+    container_name: emu9
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_9
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu10:
+    image: android_world:latest
+    container_name: emu10
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_10
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu11:
+    image: android_world:latest
+    container_name: emu11
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_11
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  emu12:
+    image: android_world:latest
+    container_name: emu12
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_12
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu13:
+    image: android_world:latest
+    container_name: emu13
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_13
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu14:
+    image: android_world:latest
+    container_name: emu14
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_14
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+  
+  emu15:
+    image: android_world:latest
+    container_name: emu15
+    privileged: true
+    devices:
+      - /dev/kvm:/dev/kvm
+    networks: [emunet]
+    environment:
+      AVD_NAME: Pixel_6_API_33_15
+      GPU_MODE: swiftshader_indirect
+      API_PORT: "5000"
+    command: >
+      bash -lc "
+        set -euo pipefail;
+        emulator -avd $${AVD_NAME:-Pixel_6_API_33}
+                 -no-window -gpu $${GPU_MODE:-swiftshader_indirect}
+                 -no-audio -no-boot-anim &
+        adb wait-for-device;
+        adb shell 'while [[ -z $(getprop sys.boot_completed | tr -d "\r") ]]; do sleep 1; done; input keyevent 82';
+        adb shell settings put system pointer_location 0 --user 0;
+        uvicorn app:app --host 0.0.0.0 --port $${API_PORT:-5000}
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 90s
+    restart: unless-stopped
+
+  gateway:
+    image: nginx:1.25
+    container_name: emu-gw
+    depends_on:
+      emu1:
+        condition: service_healthy
+      emu2:
+        condition: service_healthy
+      emu3:
+        condition: service_healthy
+      emu4:
+        condition: service_healthy
+      emu5:
+        condition: service_healthy
+      emu6:
+        condition: service_healthy
+      emu7:
+        condition: service_healthy
+      emu8:
+        condition: service_healthy
+      emu9:
+        condition: service_healthy
+      emu10:
+        condition: service_healthy
+      emu11:
+        condition: service_healthy
+      emu12:
+        condition: service_healthy
+      emu13:
+        condition: service_healthy
+      emu14:
+        condition: service_healthy
+      emu15:
+        condition: service_healthy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "23333:23333"  # single public port
+    networks: [emunet]
+    restart: unless-stopped
+
+networks:
+  emunet:
+    driver: bridge
