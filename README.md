@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://gui-libra.github.io/"><img src="https://img.shields.io/badge/🌐_Project_Page-blue" alt="Project Page"></a>
-  <a href="https://gui-libra.github.io/"><img src="https://img.shields.io/badge/📄_Paper-red" alt="Paper"></a>
+  <a href="https://arxiv.org/abs/2602.22190"><img src="https://img.shields.io/badge/📄_Paper-red" alt="Paper"></a>
   <a href="https://github.com/GUI-Libra/GUI-Libra"><img src="https://img.shields.io/badge/💻_Code-green" alt="Code"></a>
   <a href="https://huggingface.co/GUI-Libra"><img src="https://img.shields.io/badge/🤗_Models-yellow" alt="Models&Datasets"></a>
 </p>
@@ -194,11 +194,11 @@ Supported action types: `Click`, `Write`, `Terminate`, `Swipe`, `Scroll`, `Navig
 ## Citation
 
 ```bibtex
-@article{yang2025guilibra,
+@article{yang2026guilibra,
   title={GUI-Libra: Training Native GUI Agents to Reason and Act with Action-aware Supervision and Partially Verifiable RL},
   author={Yang, Rui and Wu, Qianhui and Wang, Zhaoyang and Chen, Hanyang and Yang, Ke and Cheng, Hao and Yao, Huaxiu and Peng, Baolin and Zhang, Huan and Gao, Jianfeng and Zhang, Tong},
-  journal={arXiv preprint},
-  year={2025}
+  journal={arXiv preprint arXiv:2602.22190},
+  year={2026}
 }
 ```
 
