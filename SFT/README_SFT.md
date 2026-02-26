@@ -12,32 +12,19 @@ This directory contains the code for action-aware supervised fine-tuning (SFT) o
 ## Installation
 
 ```bash
-conda create -n py310 python=3.10
-conda activate py310
-pip install -r requirements.txt
-pip uninstall torch torchvision torchaudio
-pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
-pip install flash-attn==2.8.3 --no-build-isolation
-pip install -e .
-pip install transformers==4.57.3
-```
-
-If using W&B logging (`--report_to "wandb"`):
-
-```bash
-wandb login
+bash setup.sh
 ```
 
 ## Data Preparation
 
 ### 1. Download the Dataset
 
-Clone the [Libra-81K-SFT](https://huggingface.co/datasets/Ray2333/Libra-81K-SFT) dataset from Hugging Face:
+Clone the [GUI-Libra-81K-SFT](https://huggingface.co/datasets/GUI-Libra/GUI-Libra-81K-SFT) dataset from Hugging Face:
 
 ```bash
 git lfs install
-git clone https://huggingface.co/datasets/Ray2333/Libra-81K-SFT
-cd Libra-81K-SFT
+git clone https://huggingface.co/datasets/GUI-Libra/GUI-Libra-81K-SFT
+cd GUI-Libra-81K-SFT
 ```
 
 After cloning, you will see:
