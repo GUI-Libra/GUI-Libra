@@ -35,7 +35,7 @@
 
 **GUI-Libra** is a post-training framework that turns open-source VLMs into strong native GUI agents — models that see a screenshot, think step-by-step, and output an executable action, all within a single forward pass.
 
-We find that naively adding chain-of-thought (CoT) to GUI agents *hurts* grounding accuracy, and that standard RLVR struggles because GUI rewards are only *partially* verifiable. GUI-Libra solves both:
+We find that naively adding chain-of-thought (CoT) to GUI agents *hurts* grounding accuracy, and that standard RLVR-style training cannot achieve stable offline-to-online performance because GUI rewards are only *partially* verifiable. GUI-Libra solves both:
 
 | Component | What it does |
 |-----------|-------------|
