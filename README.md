@@ -43,7 +43,7 @@ We find that naively adding chain-of-thought (CoT) to GUI agents *hurts* groundi
 | **Action-Aware SFT** | Mixes reasoning and direct-action data; reweights tokens so the model doesn't forget *where to click* while learning *why to click* |
 | **Conservative RL** | KL-regularized GRPO that stays stable under ambiguous rewards, with success-adaptive scaling to tame noisy negative gradients |
 
-The result: **GUI-Libra-4B/8B match or outperform GPT-4o and 72B models** on AndroidWorld, WebArena-Lite-v2, and Online-Mind2Web — without any online data collection.
+The result: **GUI-Libra-4B/8B match or outperform GPT-4o/GPT-4.1/GPT-5-mini and 72/32B native models** on AndroidWorld, WebArena-Lite-v2, and Online-Mind2Web — without any online data collection.
 
 
 ## To Do List
