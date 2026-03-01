@@ -688,49 +688,6 @@ Action: {{"action_type": "status", "goal_status": "infeasible"}}"""
         step_data['after_screenshot_with_som'] = after_screenshot.copy()
 
 
-        # #### self summary ####
-        # summary_prompt = _summarize_prompt(
-        #     action,
-        #     reason,
-        #     goal,
-        #     None,
-        #     None,
-        # )
-        # summary, is_safe, raw_response = self.llm.predict_mm(
-        #     summary_prompt,
-        #     [
-        #         before_screenshot,
-        #         after_screenshot,
-        #     ],
-        # )
-
-        # # print(reason,action, summary)
-        # # breakpoint()
-
-        # if is_safe == False:  # pylint: disable=singleton-comparison
-        #     #  is_safe could be None
-        #     summary = """Summary triggered LLM safety classifier."""
-
-        # if not raw_response:
-        #     print(
-        #         'Error calling LLM in summarization phase. This should not happen: '
-        #         f'{summary}'
-        #     )
-        #     step_data['summary'] = (
-        #             'Some error occurred calling LLM during summarization phase: %s'
-        #             % summary
-        #     )
-        #     self.history.append(step_data)
-        #     return base_agent.AgentInteractionResult(
-        #         False,
-        #         step_data,
-        #     )
-
-        # step_data['summary_prompt'] = summary_prompt
-        # step_data['summary'] = summary
-        # print('Summary: ' + summary)
-        # step_data['summary_raw_response'] = raw_response
-
     
         self.history.append(step_data)
         return base_agent.AgentInteractionResult(

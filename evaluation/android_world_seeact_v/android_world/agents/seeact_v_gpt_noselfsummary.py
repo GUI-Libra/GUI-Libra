@@ -673,36 +673,6 @@ Action: {{"action_type": "status", "goal_status": "infeasible"}}"""
                 step_data,
             )
 
-        # action_index = converted_action.index
-        # num_ui_elements = len(before_ui_elements)
-
-
-        # if (
-        #         converted_action.action_type
-        #         in ['click', 'long_press', 'input_text', 'scroll']
-        #         and action_index is not None
-        # ):
-        #     if action_index >= num_ui_elements:
-        #         print(
-        #             f'Index out of range, prediction index is {action_index}, but the'
-        #             f' UI element list only has {num_ui_elements} elements.'
-        #         )
-        #         step_data['summary'] = (
-        #             'The parameter index is out of range. Remember the index must be in'
-        #             ' the UI element list!'
-        #         )
-        #         self.history.append(step_data)
-        #         return base_agent.AgentInteractionResult(False, step_data)
-        #
-        #     # Add mark to the target element.
-        #     m3a_utils.add_ui_element_mark(
-        #         step_data['raw_screenshot'],
-        #         before_ui_elements[action_index],
-        #         action_index,
-        #         logical_screen_size,
-        #         physical_frame_boundary,
-        #         orientation,
-        #     )
 
         
 
@@ -748,29 +718,12 @@ Action: {{"action_type": "status", "goal_status": "infeasible"}}"""
 
         time.sleep(self.wait_after_action_seconds)
 
-        # state = self.env.get_state(wait_to_stabilize=False)
 
-        # logical_screen_size = self.env.logical_screen_size
-        # orientation = self.env.orientation
-        # physical_frame_boundary = self.env.physical_frame_boundary
-        # after_ui_elements = state.ui_elements
-        # after_ui_elements_list = _generate_ui_elements_description_list(
-        #     after_ui_elements, logical_screen_size
-        # )
 
 
         # after_screenshot = state.pixels.copy()
         after_screenshot = self.env.get_screenshot()
-        # for index, ui_element in enumerate(after_ui_elements):
-        #     if m3a_utils.validate_ui_element(ui_element, logical_screen_size):
-        #         m3a_utils.add_ui_element_mark(
-        #             after_screenshot,
-        #             ui_element,
-        #             index,
-        #             logical_screen_size,
-        #             physical_frame_boundary,
-        #             orientation,
-        #         )
+
 
         if converted_action.x:
             m3a_utils.add_ui_element_dot(
@@ -783,44 +736,7 @@ Action: {{"action_type": "status", "goal_status": "infeasible"}}"""
         m3a_utils.add_screenshot_label(after_screenshot, 'after')
         step_data['after_screenshot_with_som'] = after_screenshot.copy()
 
-        # summary_prompt = _summarize_prompt(
-        #     action,
-        #     reason,
-        #     goal,
-        #     None,
-        #     None,
-        # )
-        # summary, is_safe, raw_response = self.llm.predict_mm(
-        #     summary_prompt,
-        #     [
-        #         before_screenshot,
-        #         after_screenshot,
-        #     ],
-        # )
 
-        # if is_safe == False:  # pylint: disable=singleton-comparison
-        #     #  is_safe could be None
-        #     summary = """Summary triggered LLM safety classifier."""
-
-        # if not raw_response:
-        #     print(
-        #         'Error calling LLM in summarization phase. This should not happen: '
-        #         f'{summary}'
-        #     )
-        #     step_data['summary'] = (
-        #             'Some error occurred calling LLM during summarization phase: %s'
-        #             % summary
-        #     )
-        #     self.history.append(step_data)
-        #     return base_agent.AgentInteractionResult(
-        #         False,
-        #         step_data,
-        #     )
-
-        # step_data['summary_prompt'] = summary_prompt
-        # step_data['summary'] = f'Action selected: {action}. {summary}'
-        # print('Summary: ' + summary)
-        # step_data['summary_raw_response'] = raw_response
 
         self.history.append(step_data)
         return base_agent.AgentInteractionResult(
