@@ -194,12 +194,12 @@ class GUILibraNativeAgent(OpenCUANativeAgent):
                 func_call = f"terminate(status=\"success\", info=\"{safe_value}\")"
                 exec_actions = [self.parse_exec_action(func_call)]
             else:
-                logger.warning(f"Error in parsing guipivot JSON: {data}")
+                logger.warning(f"Error in parsing guilibra JSON: {data}")
                 func_call = "wait(seconds=1)"
                 exec_actions = [self.parse_exec_action(func_call)]
 
         except Exception as e:
-            logger.error(f"Error parsing guipivot JSON: {e}")
+            logger.error(f"Error parsing guilibra JSON: {e}")
             exec_actions = [{"name": "wait", "parameters": {"seconds": 1}}]
 
         self.previous_operations_list.append(operation)
