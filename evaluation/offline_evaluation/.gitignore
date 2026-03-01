@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Data / outputs (optional: uncomment if you don't want to track generated plans)
+# data/
+# blocks_images/

@@ -25,4 +25,6 @@ export REDDIT="http://${PUBLIC_HOSTNAME}:${REDDIT_PORT}"
 export GITLAB="http://${PUBLIC_HOSTNAME}:${GITLAB_PORT}"
 export MAP="http://${PUBLIC_HOSTNAME}:${MAP_PORT}"
 
-export ARCHIVES_LOCATION="/home/qianhuiwu/GUI-Libra/evaluation/WebArenaLiteV2/launcher/images"
+# Archive images directory (relative to this script's directory)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+export ARCHIVES_LOCATION="${SCRIPT_DIR}/images"

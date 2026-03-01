@@ -53,7 +53,7 @@ The result: **GUI-Libra-4B/8B match or outperform GPT-4o/GPT-4.1/GPT-5-mini and 
 - [x] Release GUI-Libra-81K dataset
 - [x] Release model checkpoints (GUI-Libra-3B/4B/7B/8B)
 - [x] AndroidWorld evaluation code
-- [ ] Offline evaluation code (MM-Mind2Web, AndroidControl, ScreenSpot-v2)
+- [x] Offline evaluation code (MM-Mind2Web, AndroidControl)
 
 
 ## Training Pipeline
@@ -98,7 +98,8 @@ GUI-Libra/
 ├── evaluation/                   # Evaluation benchmarks
 │   ├── WebArenaLiteV2/           # WebArena-Lite-v2 evaluation
 │   ├── online-mind2web-eval/     # Online-Mind2Web evaluation
-│   └── android_world_seeact_v/   # AndroidWorld evaluation
+│   ├── android_world_seeact_v/   # AndroidWorld evaluation
+│   └── offline_evaluation/        # Offline (MM-Mind2Web, AndroidControl)
 │
 └── images/                       # Project assets
 ```
@@ -177,6 +178,15 @@ bash run.sh
 ```
 
 See [`evaluation/android_world_seeact_v/README.md`](evaluation/android_world_seeact_v/README.md) for detailed setup instructions.
+
+#### Offline evaluation (MM-Mind2Web, AndroidControl)
+
+```bash
+cd evaluation/offline_evaluation
+# See README for data download and plan_gen_guilibra.sh usage
+```
+
+See [`evaluation/offline_evaluation/README.md`](evaluation/offline_evaluation/README.md) for data setup, planning scripts, and evaluation pipelines.
 
 ## Data Format
 
