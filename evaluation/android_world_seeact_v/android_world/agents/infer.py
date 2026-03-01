@@ -360,7 +360,7 @@ class Gpt4Wrapper(LlmWrapper, MultimodalLlmWrapper):
             model=self.model,
             messages=messages,
             temperature=self.temperature,
-            max_completion_tokens=2048,
+            max_completion_tokens=1024,
         )
         return response.choices[0].message.content, True, response
       except Exception as e:  # pylint: disable=broad-exception-caught
