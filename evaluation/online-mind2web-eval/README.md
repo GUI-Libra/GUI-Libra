@@ -32,7 +32,7 @@ Finally, for evaluating the agent trajectories, please refer to [Online-Mind2Web
 Use [vLLM](https://github.com/vllm-project/vllm) to serve the GUIPivot model checkpoint:
 
 ```bash
-vllm serve xxxxx/xxxx \
+vllm serve GUI-Libra/GUI-Libra-8B \
     --port 20001 \
     --max-model-len 32768 \
     --gpu-memory-utilization 0.9
@@ -43,7 +43,7 @@ vllm serve xxxxx/xxxx \
 ```bash
 python run.py \
     --tasks_path configs/mind2web.300.jsonl \
-    --gpt.model xxxxx/xxxx \
+    --gpt.model GUI-Libra/GUI-Libra-8B \
     --gpt.openai_api_base http://localhost:20001/v1 \
     --gpt.openai_api_key token-abc123 \
     --num_processes 4

@@ -48,8 +48,9 @@ def get_model_short_name(model: str) -> str:
 
 
 def is_qwen25_model(model: str) -> bool:
+    # smart resize
     short = get_model_short_name(model)
-    return 'qwen2.5' in short or 'qwen2.5vl' in short
+    return 'libra-7b' in short or 'libra-3b' in short
 
 
 @dataclass
