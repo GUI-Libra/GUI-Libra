@@ -6,9 +6,8 @@
 #   - Tool-call output format (<tool_call>JSON</tool_call>) instead of
 #     Python function calls inside <action> tags
 #   - Multi-turn conversation with screenshot history
-#   - Constrained action space: left_click, type, key, scroll, wait,
-#     pause_and_memorize_fact, terminate
-#     (browser is pre-navigated; no visit_url / web_search / history_back)
+#   - Action space: left_click, type, key, scroll, wait,
+#     pause_and_memorize_fact, terminate, web_search, visit, history_back
 
 import ast
 import json
@@ -85,28 +84,30 @@ class FaraNativeAgent(UIAgent):
 
         tool_description = (
             "Use a mouse and keyboard to interact with a computer, and take screenshots.\n"
-            "* The task can be completed entirely within the current website. "
-            "All actions must be performed within the current website.\n"
-            "* You MUST NOT perform web searches, visit external websites, or navigate "
-            "to any URL outside the current website. Do NOT use the address bar to change "
-            "the URL to a different website.\n"
-            "* Some actions may take time to process, so you may need to wait and take "
-            "successive screenshots to see the results of your actions.\n"
+            "* This is an interface to a desktop GUI. You do not have access to a terminal "
+            "or applications menu. You must click on desktop icons to start applications.\n"
+            "* Some applications may take time to start or process actions, so you may need "
+            "to wait and take successive screenshots to see the results of your actions. "
+            "E.g. if you click on Firefox and a window doesn't open, try wait and taking "
+            "another screenshot.\n"
             f"* The screen's resolution is {self.resized_width}x{self.resized_height}.\n"
-            "* Whenever you intend to click on an element, consult the screenshot to determine "
-            "the coordinates of the element before clicking.\n"
-            "* If you tried clicking on an element but it failed to respond, try adjusting "
-            "your coordinate so that it falls on the center of the element.\n"
+            "* Whenever you intend to move the cursor to click on an element like an icon, "
+            "you should consult a screenshot to determine the coordinates of the element "
+            "before moving the cursor.\n"
+            "* If you tried clicking on a program or link but it failed to load, even after "
+            "waiting, try adjusting your cursor position so that the tip of the cursor "
+            "visually falls on the element that you want to click.\n"
             "* Make sure to click any buttons, links, icons, etc with the cursor tip in the "
             "center of the element. Don't click boxes on their edges unless asked.\n"
-            "* When a separate scrollable container prominently overlays the webpage and you "
-            "want to scroll within it, scroll at the location of that container.\n"
-            "* If a popup window appears that you want to close, try left_click() on the "
-            "close button or key(keys=['Escape']).\n"
+            "* When a separate scrollable container prominently overlays the webpage, if you "
+            "want to scroll within it, you typically need to mouse_move() over it first and "
+            "then scroll().\n"
+            "* If a popup window appears that you want to close, if left_click() on the 'X' "
+            "or close button doesn't work, try key(keys=['Escape']) to close it.\n"
             "* On some search bars, when you type(), you may need to press_enter=False and "
             "instead separately call left_click() on the search button to submit the search "
             "query. This is especially true of search bars that have auto-suggest popups "
-            "for e.g. locations.\n"
+            "for e.g. locations\n"
             "* For calendar widgets, you usually need to left_click() on arrows to move "
             "between months and left_click() on dates to select them; type() is not "
             "typically used to input dates there."
@@ -117,28 +118,26 @@ class FaraNativeAgent(UIAgent):
                 "action": {
                     "description": (
                         "The action to perform. The available actions are:\n"
-                        "* `left_click`: Click the left mouse button at the specified coordinate.\n"
-                        "* `type`: Type a string of text on the keyboard. Optionally clicks at a "
-                        "coordinate first to focus the input field.\n"
                         '* `key`: Performs key down presses on the arguments passed in order, '
                         'then performs key releases in reverse order. Includes "Enter", "Alt", '
                         '"Shift", "Tab", "Control", "Backspace", "Delete", "Escape", "ArrowUp", '
-                        '"ArrowDown", "ArrowLeft", "ArrowRight", "PageDown", "PageUp", etc.\n'
-                        "* `scroll`: Performs a scroll of the mouse scroll wheel. "
-                        "Positive values scroll up, negative values scroll down.\n"
-                        "* `wait`: Wait specified seconds for a change to happen.\n"
+                        '"ArrowDown", "ArrowLeft", "ArrowRight", "PageDown", "PageUp", "Shift", etc.\n'
+                        "* `type`: Type a string of text on the keyboard.\n"
+                        "* `mouse_move`: Move the cursor to a specified (x, y) pixel coordinate on the screen.\n"
+                        "* `left_click`: Click the left mouse button.\n"
+                        "* `scroll`: Performs a scroll of the mouse scroll wheel.\n"
+                        "* `visit_url`: Visit a specified URL.\n"
+                        "* `web_search`: Perform a web search with a specified query.\n"
+                        "* `history_back`: Go back to the previous page in the browser history.\n"
                         "* `pause_and_memorize_fact`: Pause and memorize a fact for future reference.\n"
+                        "* `wait`: Wait specified seconds for the change to happen.\n"
                         "* `terminate`: Terminate the current task and report its completion status."
                     ),
-                    "enum": ["left_click", "type", "key", "scroll", "wait", "pause_and_memorize_fact", "terminate"],
+                    "enum": ["key", "type", "mouse_move", "left_click", "scroll", "visit_url", "web_search", "history_back", "pause_and_memorize_fact", "wait", "terminate"],
                     "type": "string",
                 },
                 "coordinate": {
-                    "description": (
-                        "(x, y): The x (pixels from the left edge) and y (pixels from the "
-                        "top edge) coordinates to move the mouse to. Required only by "
-                        "`action=left_click` and `action=type`."
-                    ),
+                    "description": "(x, y): The x (pixels from the left edge) and y (pixels from the top edge) coordinates to move the mouse to. Required only by `action=left_click`, `action=mouse_move`, and `action=type`.",
                     "type": "array",
                 },
                 "text": {
@@ -179,6 +178,14 @@ class FaraNativeAgent(UIAgent):
                     "description": "The status of the task. Required only by `action=terminate`.",
                     "type": "string",
                     "enum": ["success", "failure"],
+                },
+                "url": {
+                    "description": "The URL to visit. Required only by `action=visit_url`.",
+                    "type": "string",
+                },
+                "query": {
+                    "description": "The query to search for. Required only by `action=web_search`.",
+                    "type": "string",
                 },
             },
             "required": ["action"],
@@ -317,8 +324,8 @@ class FaraNativeAgent(UIAgent):
     def _convert_action(self, tool_call) -> List[dict]:
         """Convert a FARA tool-call dict to a list of framework actions.
 
-        Constrained action space: left_click, type, key, scroll, wait, terminate.
-        Aliases from magentic-ui are accepted but not advertised in the schema.
+        Action space: key, type, mouse_move, left_click, scroll, visit_url,
+        web_search, history_back, pause_and_memorize_fact, wait, terminate.
         """
         if tool_call is None:
             return [{"name": "wait", "parameters": {"seconds": 1}}]
@@ -326,8 +333,15 @@ class FaraNativeAgent(UIAgent):
         args = tool_call.get("arguments", {})
         action_type = args.get("action", "")
 
+        # --- mouse_move ---
+        if action_type == "mouse_move":
+            x, y = self._scale_coordinate(args.get("coordinate"))
+            return [
+                {"name": "moveTo", "parameters": {"x": x, "y": y}}
+            ]
+
         # --- left_click ---
-        if action_type in ("left_click", "click"):
+        elif action_type in ("left_click", "click"):
             x, y = self._scale_coordinate(args.get("coordinate"))
             return [
                 {"name": "click", "parameters": {"x": x, "y": y, "clicks": 1, "button": "left"}}
@@ -404,6 +418,20 @@ class FaraNativeAgent(UIAgent):
                 answer = self.memorized_facts[-1]
                 return [{"name": "response", "parameters": {"answer": answer}}]
             return [{"name": "terminate", "parameters": {"status": status, "info": ""}}]
+
+        # --- web_search ---
+        elif action_type == "web_search":
+            query = args.get("query", "")
+            return [{"name": "go_to_url", "parameters": {"url": f"https://www.google.com/search?q={query}"}}]
+
+        # --- visit_url / visit ---
+        elif action_type in ("visit_url", "visit"):
+            url = args.get("url", "")
+            return [{"name": "go_to_url", "parameters": {"url": url}}]
+
+        # --- history_back ---
+        elif ("history" in action_type) or ("back" in action_type):
+            return [{"name": "back", "parameters": {}}]
 
         else:
             logger.warning("Unknown FARA action type: %s", action_type)

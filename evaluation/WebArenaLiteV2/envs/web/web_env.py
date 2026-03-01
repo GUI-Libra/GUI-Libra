@@ -845,6 +845,7 @@ class WebEnv(BaseEnv):
                 "keyup": self._execute_keyup,
                 "keydown": self._execute_keydown,
                 "back": self._execute_back,
+                "go_to_url": self._execute_go_to_url,
             }
 
             # Get corresponding handler and execute
@@ -1162,6 +1163,24 @@ class WebEnv(BaseEnv):
             else:  # direction in ["left", "right"]
                 js_scroll = f"window.scrollBy({delta_x}, 0);"
             self.page.evaluate(js_scroll)
+        self.page.wait_for_timeout(2000)
+        return True
+
+    def _execute_go_to_url(self, parameters: Dict[str, Any]) -> bool:
+        """
+        Navigate to a specified URL.
+
+        Args:
+            parameters: Dictionary containing url to navigate to
+
+        Returns:
+            bool: Whether the action was executed successfully
+        """
+        url = parameters.get("url", "")
+        if not url:
+            return False
+        self.page.goto(url, timeout=self.timeout)
+        self.page.wait_for_load_state("domcontentloaded")
         self.page.wait_for_timeout(2000)
         return True
 
